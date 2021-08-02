@@ -39,7 +39,8 @@ fun PostsList(
     onClick:(Post)->Unit
 ){
     LazyColumn(
-        verticalArrangement = Arrangement.spacedBy(12.dp)
+        verticalArrangement = Arrangement.spacedBy(12.dp),
+        contentPadding = PaddingValues(top = 12.dp,bottom = 69.dp)
     ) {
         items(items){item->
             PostItem(post = item){

@@ -7,6 +7,8 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
@@ -16,9 +18,10 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.toArgb
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.karimsinouh.devhub.ui.theme.DevhubTheme
+import com.karimsinouh.devhub.utils.ScreenState
+import com.karimsinouh.devhub.utils.customComposables.CenterProgress
 import com.karimsinouh.devhub.utils.customComposables.MessageScreen
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -33,6 +36,7 @@ class ChatRoomsActivity:ComponentActivity() {
 
     private val vm by viewModels<ChatRoomsViewModel>()
 
+    @ExperimentalMaterialApi
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -41,7 +45,18 @@ class ChatRoomsActivity:ComponentActivity() {
             DevhubTheme {
                 window.statusBarColor=MaterialTheme.colors.surface.toArgb()
                 Surface(color = MaterialTheme.colors.surface) {
-                    ChatPreview()
+                    
+                    
+                    BottomSheetScaffold(
+                        topBar={ChatRoomsTopBar()},
+                        sheetContent = {},
+                        sheetPeekHeight = 0.dp
+                    ) {
+
+                        Content()
+
+                    }
+                    
                 }
             }
 
@@ -51,52 +66,79 @@ class ChatRoomsActivity:ComponentActivity() {
     }
 
     @Composable
-    @Preview(showBackground = true)
-    fun ChatPreview() {
-        Column(
-            modifier = Modifier.fillMaxSize()
-        ) {
-            TopAppBar(
-                title = {Text("Messages")},
-                navigationIcon = { IconButton(onClick = { finish()}) {
-                    Icon(Icons.Outlined.ArrowBack,null)
-                }},
-                backgroundColor = MaterialTheme.colors.surface,
-                contentColor = MaterialTheme.colors.onSurface,
-                elevation = 0.dp,
-            )
+    private fun Content(){
+        when(vm.state.value){
 
-            TextField(
-                value = vm.query.value,
-                onValueChange = {vm.query.value=it},
-                placeholder = { Text(text = "Search")},
-                shape = RoundedCornerShape(8.dp),
-                modifier = Modifier
-                    .padding(12.dp)
-                    .fillMaxWidth(),
-                trailingIcon = {
-                    IconButton(onClick = {  }) {
-                        Icon(
-                            imageVector = Icons.Outlined.Search,
-                            contentDescription = null,
-                        )
-                    }
-                },
-                colors=TextFieldDefaults.textFieldColors(
-                    unfocusedIndicatorColor = Color.Transparent,
-                    focusedIndicatorColor = Color.Transparent
-                ),
-                singleLine = true
-            )
+            ScreenState.LOADING-> CenterProgress()
 
-            MessageScreen(
-                title = "No chat rooms yet",
-                message = "It's a bit empty here, you haven't sent or received any messages yet",
-                button = "Got it",
-                onClick = { finish() }
-            )
+            ScreenState.IDLE->{
+                Column {
+                    SearchTextField()
+                    ChatRoomsList()
+                }
+            }
+
+            ScreenState.ERROR->{
+                MessageScreen(
+                    title ="Oops!",
+                    message =vm.error?:"Something went wrong",
+                    button = "Got it",
+                    onClick = {finish()}
+                )
+            }
+            ScreenState.DONE -> Unit
+        }
+    }
+
+    @Composable
+    private fun ChatRoomsTopBar(){
+        TopAppBar(
+            title = {Text("Messages")},
+            navigationIcon = { IconButton(onClick = { finish()}) {
+                Icon(Icons.Outlined.ArrowBack,null)
+            }},
+            backgroundColor = MaterialTheme.colors.surface,
+            contentColor = MaterialTheme.colors.onSurface,
+            elevation = 0.dp,
+        )
+    }
+
+    @Composable
+    private fun ChatRoomsList() {
+        LazyColumn{
+
+            items(vm.chatRooms.value){item ->
+
+            }
 
         }
     }
+
+    @Composable
+    private fun SearchTextField(){
+        TextField(
+            value = vm.query.value,
+            onValueChange = {vm.query.value=it},
+            placeholder = { Text(text = "Search")},
+            shape = RoundedCornerShape(8.dp),
+            modifier = Modifier
+                .padding(12.dp)
+                .fillMaxWidth(),
+            trailingIcon = {
+                IconButton(onClick = {  }) {
+                    Icon(
+                        imageVector = Icons.Outlined.Search,
+                        contentDescription = null,
+                    )
+                }
+            },
+            colors=TextFieldDefaults.textFieldColors(
+                unfocusedIndicatorColor = Color.Transparent,
+                focusedIndicatorColor = Color.Transparent
+            ),
+            singleLine = true
+        )
+    }
+
 
 }
