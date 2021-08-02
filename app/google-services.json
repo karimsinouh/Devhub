@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "757134337299",
+    "project_id": "devshub-ec1db",
+    "storage_bucket": "devshub-ec1db.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:757134337299:android:8a9f5a6d0c2e1921ada6e6",
+        "android_client_info": {
+          "package_name": "com.karimsinouh.devhub"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "757134337299-hrr2q6723k4mahq4f62n1i97vgl1uk2h.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBLt02Mdv4mETlZoYHslhG1ke5L4aNQScU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "757134337299-hrr2q6723k4mahq4f62n1i97vgl1uk2h.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

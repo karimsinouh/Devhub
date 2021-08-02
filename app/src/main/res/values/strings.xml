@@ -1,0 +1,43 @@
+<resources>
+    <string name="app_name">Devhub</string>
+    <string name="home">Home</string>
+    <string name="profile">Profile</string>
+    <string name="search">Search</string>
+    <string name="Trophies">Trophies</string>
+    <string name="login">Login</string>
+    <string name="onBoarding">On Boarding</string>
+    <string name="signUp">Sign Up</string>
+    <string name="signup">Sign up</string>
+    <string name="signup_text">Create an account ans join our awesome community</string>
+    <string name="name">Name</string>
+    <string name="password">Password</string>
+    <string name="already_have_account">Already have an account?</string>
+    <string name="login_text">make yourself feel home, sweetie</string>
+    <string name="dont_have_account">Don\'t have an account?</string>
+    <string name="email">Email</string>
+    <string name="editProfile">Edit profile</string>
+    <string name="follow">Follow</string>
+    <string name="unFollow">unfollow</string>
+    <string name="message">Message</string>
+    <string name="bio">Bio</string>
+    <string name="done">Done</string>
+    <string name="skills">Skills</string>
+    <string name="createNew">Create New</string>
+    <string name="viewPost">View Post</string>
+    <string name="visit_profile">Visit Profile</string>
+    <string name="viewUsersList">Users List</string>
+    <string name="users">Users</string>
+    <string name="ok">OK</string>
+    <string name="hashtags">Hashtags</string>
+    <string name="usersBySkill">users by skill</string>
+    <string name="github">Github</string>
+    <string name="behance">Behance</string>
+    <string name="dribble">Dribble</string>
+
+    <string-array name="postTypes">
+        <item>Question</item>
+        <item>Announcement</item>
+        <item>Tutorial</item>
+    </string-array>
+
+</resources>
