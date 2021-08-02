@@ -16,6 +16,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -30,6 +31,7 @@ import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import com.karimsinouh.devhub.R
 import com.karimsinouh.devhub.data.User
+import com.karimsinouh.devhub.ui.chat.chat.ChatActivity
 import com.karimsinouh.devhub.ui.items.PostItem
 import com.karimsinouh.devhub.ui.main.MainViewModel
 import com.karimsinouh.devhub.ui.theme.DevhubTheme
@@ -82,6 +84,8 @@ fun UserInfoSection(
     postCount:Int,
     currentUid:String?=Firebase.auth.currentUser?.uid!!
 ){
+
+    val context= LocalContext.current
 
     Column(
         modifier= Modifier
@@ -177,7 +181,7 @@ fun UserInfoSection(
                         .fillMaxWidth()
                         .weight(1f)
                 ) {
-
+                    ChatActivity.open(context,user)
                 }
             }
 

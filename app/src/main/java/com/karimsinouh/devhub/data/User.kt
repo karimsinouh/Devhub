@@ -5,6 +5,7 @@ import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.*
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
+import java.io.Serializable
 import java.util.*
 
 data class User(
@@ -23,7 +24,7 @@ data class User(
     val behance:String?="",
     val dribble:String?="",
     @ServerTimestamp val joinedIn: Date?=null
-){
+):Serializable{
 
     companion object{
         fun get(id:String?=Firebase.auth.currentUser?.uid,realtime:Boolean=false,listener:(Result<User>)->Unit){

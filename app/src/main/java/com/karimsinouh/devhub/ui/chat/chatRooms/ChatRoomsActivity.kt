@@ -19,6 +19,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.unit.dp
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.ktx.Firebase
+import com.karimsinouh.devhub.ui.items.ChatRoomItem
 import com.karimsinouh.devhub.ui.theme.DevhubTheme
 import com.karimsinouh.devhub.utils.ScreenState
 import com.karimsinouh.devhub.utils.customComposables.CenterProgress
@@ -34,6 +37,7 @@ class ChatRoomsActivity:ComponentActivity() {
         }
     }
 
+    private val uid=Firebase.auth.currentUser?.uid!!
     private val vm by viewModels<ChatRoomsViewModel>()
 
     @ExperimentalMaterialApi
@@ -106,11 +110,9 @@ class ChatRoomsActivity:ComponentActivity() {
     @Composable
     private fun ChatRoomsList() {
         LazyColumn{
-
             items(vm.chatRooms.value){item ->
-
+                ChatRoomItem(chatRoom = item, uid = uid)
             }
-
         }
     }
 
