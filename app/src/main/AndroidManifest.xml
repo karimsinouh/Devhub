@@ -23,6 +23,10 @@
             android:theme="@style/Theme.Devhub.NoActionBar"/>
 
         <activity
+            android:name=".ui.chat.chatRooms.ChatRoomsActivity"
+            android:theme="@style/Theme.Devhub.NoActionBar"/>
+
+        <activity
             android:name=".ui.main.MainActivity"
             android:exported="true"
             android:label="@string/app_name"

@@ -115,11 +115,8 @@ class MainActivity : ComponentActivity() {
         MainTopBar(
             title= stringResource(id = vm.currentScreen.value.title),
             showBackArrow=shouldShowBackArrow,
-            onNavigationIcon =
-            { toggleDrawer() },
-            onBackPressed = {
-                navController.popBackStack()
-            }
+            onNavigationIcon = { toggleDrawer() },
+            onBackPressed = { navController.popBackStack() },
         )
     }
 

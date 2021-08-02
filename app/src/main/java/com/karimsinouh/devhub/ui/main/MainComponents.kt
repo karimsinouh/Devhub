@@ -10,13 +10,16 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import com.karimsinouh.devhub.R
 import androidx.compose.material.icons.filled.Menu
+import androidx.compose.material.icons.outlined.Send
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import com.karimsinouh.devhub.ui.chat.chatRooms.ChatRoomsActivity
 import com.karimsinouh.devhub.ui.theme.Shapes
 import com.karimsinouh.devhub.utils.Screen
 
@@ -27,6 +30,7 @@ fun MainTopBar(
     onNavigationIcon: () -> Unit,
     onBackPressed:()->Unit
 ){
+    val context=LocalContext.current
     Column {
         TopAppBar(
             title = {Text(title)},
@@ -42,7 +46,13 @@ fun MainTopBar(
             },
             contentColor = MaterialTheme.colors.onSurface,
             backgroundColor = MaterialTheme.colors.surface,
-            elevation = 0.dp
+            elevation = 0.dp,
+            actions = {
+                if(!showBackArrow)
+                    IconButton(onClick = { ChatRoomsActivity.open(context)}) {
+                        Icon(imageVector = Icons.Outlined.Send, contentDescription = null)
+                    }
+            }
         )
         Divider()
     }
@@ -119,7 +129,9 @@ fun MainDrawer(
         ListItem(
             text = { Text("Log out") },
             icon = { Icon(painter = painterResource(id = R.drawable.ic_logout), null) },
-            modifier = Modifier.clip(Shapes.large).clickable(onClick = onLogOut)
+            modifier = Modifier
+                .clip(Shapes.large)
+                .clickable(onClick = onLogOut)
         )
 
     }
