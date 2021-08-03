@@ -69,15 +69,16 @@ class ChatActivity:ComponentActivity() {
 
             DevhubTheme {
                 window.statusBarColor=MaterialTheme.colors.surface.toArgb()
-                Surface(color = MaterialTheme.colors.surface) {
-                    Scaffold (
-                        topBar = { ChatTopBar(vm.user.value!!) },
-                        bottomBar = {MessageInput()},
-                        content = {
-                            Content()
-                        }
-                    )
-                }
+
+                Scaffold (
+                    topBar = { ChatTopBar(vm.user.value!!) },
+                    bottomBar = {MessageInput()},
+                    content = {
+                        Content()
+                    },
+                    backgroundColor = MaterialTheme.colors.surface
+                )
+
             }
 
 
@@ -101,18 +102,24 @@ class ChatActivity:ComponentActivity() {
                 LazyColumn(
                     verticalArrangement = Arrangement.spacedBy(8.dp),
                     reverseLayout = true,
-                    modifier=Modifier.padding(bottom = 78.dp)
+                    modifier=Modifier.padding(bottom = 78.dp),
+                    contentPadding = PaddingValues(12.dp),
                 ) {
 
                     items(vm.messages.value){item->
-                        RightMessage(message = item, isLastOne = false)
+
+                        if(item.sender==uid)
+                            RightMessage(message = item, isLastOne = false)
+                        else
+                            LeftMessage(message = item)
+
                     }
 
                 }
             }
 
             ScreenState.ERROR->{
-                MessageScreen(title = "Wtf", message = vm.error!!)
+                MessageScreen(title = "Hmm..", message = vm.error!!)
             }
 
             ScreenState.LOADING-> CenterProgress()
@@ -146,11 +153,13 @@ class ChatActivity:ComponentActivity() {
                     text = user.name?:"Some User",
                     fontSize = 16.sp
                 )
-                Text(
-                    text = "Online",
-                    fontSize = 12.sp,
-                    color=MaterialTheme.colors.onSurface.copy(alpha = 0.8f)
-                )
+                if(user.online!!){
+                    Text(
+                        text = "Online",
+                        fontSize = 12.sp,
+                        color=MaterialTheme.colors.onSurface.copy(alpha = 0.8f)
+                    )
+                }
             }
         }
     }
@@ -159,8 +168,8 @@ class ChatActivity:ComponentActivity() {
     @Preview
     private fun MessageInput() {
         TextField(
-            value = "",
-            onValueChange = {},
+            value = vm.message.value,
+            onValueChange = {vm.message.value=it},
             shape = Shapes.medium,
             colors = TextFieldDefaults.textFieldColors(
                 unfocusedIndicatorColor = Color.Transparent,
@@ -174,7 +183,7 @@ class ChatActivity:ComponentActivity() {
                         Icon(painter = painterResource(R.drawable.ic_image), contentDescription = null)
                     }
 
-                    IconButton(onClick = {  }) {
+                    IconButton(onClick = { vm.sendTextMessage() }) {
                         Icon(imageVector = Icons.Outlined.Send, contentDescription = null)
                     }
 
@@ -207,13 +216,34 @@ class ChatActivity:ComponentActivity() {
             )
 
 
-            if(isLastOne)
+            if(isLastOne && message.seen!!)
                 Text(
                     text = "Seen",
                     fontStyle = FontStyle.Italic,
                     fontSize = 12.sp
                 )
 
+        }
+    }
+
+    @Composable
+    private fun LeftMessage(
+        message:Message
+    ) {
+        Column(
+            modifier= Modifier
+                .fillMaxWidth()
+                .padding(end = 64.dp),
+            horizontalAlignment = Alignment.Start
+        ) {
+            Text(
+                text = message.message?:"",
+                color = MaterialTheme.colors.onSurface,
+                modifier = Modifier
+                    .clip(RoundedCornerShape(8.dp))
+                    .background(MaterialTheme.colors.onSurface.copy(alpha = 0.1f))
+                    .padding(horizontal = 12.dp, vertical = 8.dp)
+            )
         }
     }
 

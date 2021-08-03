@@ -14,9 +14,7 @@ class ChatViewModel @Inject constructor() :ViewModel() {
 
     var chatRoomId:String?=null
     val user= mutableStateOf<User?>(null)
-
     val state= mutableStateOf(ScreenState.LOADING)
-
     var error:String ?= ""
         set(value) {
             state.value=if (value!="")
@@ -28,13 +26,22 @@ class ChatViewModel @Inject constructor() :ViewModel() {
 
     val messages= mutableStateOf<List<Message>>(emptyList())
 
+    val message= mutableStateOf("")
+
+    fun sendTextMessage(){
+        if (message.value!=""){
+            Message.send(message.value,chatRoomId!!)
+            message.value=""
+        }
+    }
+
     private fun loadMessages(){
         ChatRoom.getMessages(chatRoomId!!) {
             if (it.isSuccessful){
                 val result=it.data ?: emptyList()
                 messages.value=result
 
-                if (result.isEmpty()){
+                if (result.isNotEmpty()){
                     state.value=ScreenState.IDLE
                 }else{
                     error="You haven't sent any messages yet"
@@ -62,7 +69,7 @@ class ChatViewModel @Inject constructor() :ViewModel() {
                     error=it.message?:""
                 }
             }
-        }else if (this.chatRoomId==null && chatRoomId!=null){
+        }else if (this.chatRoomId!=null){
             loadMessages()
         }
 

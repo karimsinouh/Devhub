@@ -1,6 +1,7 @@
 package com.karimsinouh.devhub.data
 
 import com.google.firebase.firestore.DocumentId
+import com.google.firebase.firestore.Query
 import com.google.firebase.firestore.ServerTimestamp
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
@@ -18,7 +19,7 @@ data class ChatRoom(
             Message(
                 it["sender"] as String,
                 it["message"] as String,
-                it["type"] as Int,
+                (it["type"]).toString().toInt(),
                 it["seen"] as Boolean,
             )
         }
@@ -44,7 +45,10 @@ data class ChatRoom(
 
 
         fun getMessages(id:String,listener: (Result<List<Message>>) -> Unit){
-            Firebase.firestore.collection("chatRooms/$id/messages").addSnapshotListener { value, error ->
+            Firebase.firestore
+                .collection("chatRooms/$id/messages")
+                .orderBy("timestamp",Query.Direction.DESCENDING)
+                .addSnapshotListener { value, error ->
                 if(error!=null){
                     listener(Result(false,null,error.message))
                     return@addSnapshotListener
@@ -59,7 +63,9 @@ data class ChatRoom(
 
 
         fun getChatRoomsOf(id:String,listener:(Result<List<ChatRoom>>)->Unit){
-            val ref= Firebase.firestore.collection("chatRooms").whereArrayContains("users",id)
+            val ref= Firebase.firestore.collection("chatRooms")
+                .whereArrayContains("users",id)
+                .orderBy("lastUpdate",Query.Direction.DESCENDING)
             ref.addSnapshotListener { value, error ->
                 if (error!=null){
                     listener(Result(false,null,error.message))

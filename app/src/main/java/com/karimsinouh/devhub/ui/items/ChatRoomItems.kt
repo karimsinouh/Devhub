@@ -1,87 +1,93 @@
 package com.karimsinouh.devhub.ui.items
 
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.karimsinouh.devhub.R
 import com.karimsinouh.devhub.data.ChatRoom
 import com.karimsinouh.devhub.data.User
+import com.karimsinouh.devhub.ui.theme.Red
 import com.karimsinouh.devhub.ui.theme.Shapes
 import kotlin.random.Random
 import kotlin.random.nextInt
 
+
+/**
+ * uid: the current logged in user
+ * **/
 @Composable
 fun ChatRoomItem(
     chatRoom:ChatRoom,
-    uid:String
+    uid:String,
+    onClick:(user:User)->Unit
 ){
 
-    val user= rememberSaveable{
+    val _user= rememberSaveable{
         mutableStateOf<User?>(null)
     }
 
-    if (user.value==null){
+    if (_user.value==null){
         ChatRoomPlaceHolder()
         chatRoom.getOtherUser(uid){
-            user.value=it
+            _user.value=it
         }
 
-    }else{
+    }else _user.value?.let{ user->
         Row(
             modifier = Modifier
-                .padding(start = 12.dp, end = 12.dp, top = 6.dp, bottom = 6.dp)
+                .clickable { onClick(user) }
+                .padding(start = 12.dp, end = 12.dp, top = 10.dp, bottom = 10.dp)
                 .fillMaxWidth(),
-            horizontalArrangement = Arrangement.spacedBy(8.dp),
+            horizontalArrangement = Arrangement.spacedBy(12.dp),
             verticalAlignment = Alignment.CenterVertically,
         ){
 
             //profile picture
-            Image(
-                painter = painterResource(id = R.drawable.ic_launcher_background),
-                contentDescription = null,
-                modifier = Modifier
-                    .clip(CircleShape)
-                    .size(55.dp)
-            )
+
+            ProfilePicture(size = 55.dp, url = user.picture!!, isOnline = user.online!!)
 
             //name and message
             Column(
                 modifier=Modifier.weight(0.9f)
             ) {
                 Text(
-                    text = "Karim Sinouh",
+                    text = user.name ?: "Some User",
                     fontSize = 18.sp,
                     fontWeight = FontWeight.Bold
                 )
 
-                Text(
-                    text = "him: Hey there",
-                    fontSize = 12.sp,
-                    color=MaterialTheme.colors.onBackground.copy(alpha=0.8f)
-                )
+                chatRoom.lastMessageAsObject()?.let {
+
+                    val sender=if (it.sender==uid) "You:" else "Him:"
+
+                    Text(
+                        text = "$sender ${it.message}",
+                        fontSize = 12.sp,
+                        color=MaterialTheme.colors.onBackground.copy(alpha=0.7f)
+                    )
+
+                }
             }
 
-            Box(modifier = Modifier
-                .size(8.dp)
-                .clip(CircleShape)
-                .background(Color.Red))
+            chatRoom.lastMessageAsObject()?.let {
+                if (!it.seen!! && it.sender!=uid)
+                    Box(modifier = Modifier
+                        .size(10.dp)
+                        .clip(CircleShape)
+                        .background(Red))
+            }
         }
     }
 }

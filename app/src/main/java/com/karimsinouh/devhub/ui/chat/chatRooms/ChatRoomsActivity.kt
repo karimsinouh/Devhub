@@ -21,6 +21,7 @@ import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.unit.dp
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
+import com.karimsinouh.devhub.ui.chat.chat.ChatActivity
 import com.karimsinouh.devhub.ui.items.ChatRoomItem
 import com.karimsinouh.devhub.ui.theme.DevhubTheme
 import com.karimsinouh.devhub.utils.ScreenState
@@ -48,20 +49,18 @@ class ChatRoomsActivity:ComponentActivity() {
 
             DevhubTheme {
                 window.statusBarColor=MaterialTheme.colors.surface.toArgb()
-                Surface(color = MaterialTheme.colors.surface) {
-                    
-                    
-                    BottomSheetScaffold(
-                        topBar={ChatRoomsTopBar()},
-                        sheetContent = {},
-                        sheetPeekHeight = 0.dp
-                    ) {
 
-                        Content()
+                BottomSheetScaffold(
+                    topBar={ChatRoomsTopBar()},
+                    sheetContent = {},
+                    sheetPeekHeight = 0.dp,
+                    backgroundColor = MaterialTheme.colors.surface
+                ) {
 
-                    }
-                    
+                    Content()
+
                 }
+
             }
 
 
@@ -111,7 +110,10 @@ class ChatRoomsActivity:ComponentActivity() {
     private fun ChatRoomsList() {
         LazyColumn{
             items(vm.chatRooms.value){item ->
-                ChatRoomItem(chatRoom = item, uid = uid)
+                ChatRoomItem(chatRoom = item, uid = uid){user->
+                    ChatActivity.open(this@ChatRoomsActivity,user,item.id)
+                }
+                Divider(modifier=Modifier.padding(start = 75.dp,end = 12.dp))
             }
         }
     }

@@ -22,6 +22,7 @@ import androidx.compose.ui.unit.sp
 import coil.compose.rememberImagePainter
 import com.karimsinouh.devhub.R
 import com.karimsinouh.devhub.data.User
+import com.karimsinouh.devhub.ui.theme.Green
 
 @Composable
 fun UserItem(
@@ -38,7 +39,7 @@ fun UserItem(
         verticalAlignment = Alignment.CenterVertically
     ){
 
-        ProfilePicture(size = 55.dp, url = user.picture!!, isOnline = user.isOnline!!)
+        ProfilePicture(size = 55.dp, url = user.picture!!, isOnline = user.online!!)
 
         Column {
             Text(
@@ -101,9 +102,9 @@ fun ProfilePicture(
             Spacer(
                 modifier = Modifier
                     .absoluteOffset(offset, offset)
-                    .size((size * 0.15f))
+                    .size((size * 0.18f))
                     .clip(CircleShape)
-                    .background(Color.Green)
+                    .background(Green)
 
             )
         }

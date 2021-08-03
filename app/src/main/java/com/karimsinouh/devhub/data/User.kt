@@ -19,7 +19,7 @@ data class User(
     val following:List<String>?= emptyList(),
     var searchText:String?=null,
     var searchKeywords:List<String>?= emptyList(),
-    val isOnline:Boolean?=false,
+    val online:Boolean?=false,
     val github:String?="",
     val behance:String?="",
     val dribble:String?="",

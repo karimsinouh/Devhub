@@ -28,16 +28,15 @@ data class Message(
             chatRoomId: String,
             type: Int?= TYPE_TEXT
         ){
-            val ref=Firebase.firestore.collection("chatRooms").document(chatRoomId).collection("messages")
+            val chatRoomReference=Firebase.firestore.collection("chatRooms").document(chatRoomId)
 
             val uid=Firebase.auth.currentUser?.uid!!
             val messageObject=Message(uid, message, type)
 
-            ref.add(messageObject).addOnCompleteListener {sendingTask->
-                if (sendingTask.isSuccessful){
-                    val messageRef=ref.document(sendingTask.result?.id!!)
-                    messageRef.update("lastMessage",messageObject.asMap())
-                    messageRef.update("lastUpdate",System.currentTimeMillis())
+            chatRoomReference.collection("messages").add(messageObject).addOnCompleteListener {
+                if (it.isSuccessful){
+                    chatRoomReference.update("lastMessage",messageObject.asMap())
+                    chatRoomReference.update("lastUpdate",System.currentTimeMillis())
                 }
             }
 

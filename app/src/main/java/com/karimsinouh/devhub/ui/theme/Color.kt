@@ -12,3 +12,5 @@ val DeepBlack=Color(0xFF1C262E)
 val WhiteDark=Color(0xFFecf0f1)
 val WhiteLight=Color(0xFFFFFFFF)
 
+val Red=Color(0xeFF74c3c)
+val Green=Color(0xFF2ecc71)
