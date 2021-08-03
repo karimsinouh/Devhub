@@ -74,6 +74,7 @@ dependencies {
     implementation ("com.google.firebase:firebase-auth-ktx:21.0.1")
     implementation ("com.google.firebase:firebase-storage-ktx:20.0.0")
     implementation ("com.google.firebase:firebase-firestore-ktx:23.0.3")
+    implementation ("com.google.firebase:firebase-messaging-ktx:22.0.0")
 
     //accompanist
     val accompanistVersion="0.15.0"
@@ -82,6 +83,12 @@ dependencies {
     implementation("com.google.accompanist:accompanist-pager-indicators:$accompanistVersion")
 
     api ("com.theartofdev.edmodo:android-image-cropper:2.8.+")
+
+    //network calls
+    val ktor_version="1.6.2"
+    implementation("io.ktor:ktor-client-core:$ktor_version")
+    implementation("io.ktor:ktor-client-android:$ktor_version")
+    implementation("io.ktor:ktor-client-gson:$ktor_version")
 
 
 

@@ -44,6 +44,8 @@
 
         <service android:name=".services.UploadPostService"/>
 
+        <service android:name=".services.UploadPostService" />
+
     </application>
 
 </manifest>

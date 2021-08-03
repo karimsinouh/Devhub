@@ -23,6 +23,7 @@ data class User(
     val github:String?="",
     val behance:String?="",
     val dribble:String?="",
+    val token:String?=null,
     @ServerTimestamp val joinedIn: Date?=null
 ):Serializable{
 
@@ -67,6 +68,11 @@ data class User(
                 .addOnCompleteListener {
                     listener(Result(it.isSuccessful,it.result?.toObjects(User::class.java),it.exception?.message))
                 }
+        }
+
+        fun updateToken(uid:String,token: String){
+            Firebase.firestore.collection("users").document(uid)
+                .update("token",token)
         }
 
     }
