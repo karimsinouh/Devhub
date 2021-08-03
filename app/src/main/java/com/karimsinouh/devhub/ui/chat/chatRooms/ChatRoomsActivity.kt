@@ -109,7 +109,11 @@ class ChatRoomsActivity:ComponentActivity() {
     @Composable
     private fun ChatRoomsList() {
         LazyColumn{
-            items(vm.chatRooms.value){item ->
+            items(
+                items = vm.chatRooms.value,
+                key = { it.id!! }
+            ){item ->
+
                 ChatRoomItem(chatRoom = item, uid = uid){user->
                     ChatActivity.open(this@ChatRoomsActivity,user,item.id)
                 }
