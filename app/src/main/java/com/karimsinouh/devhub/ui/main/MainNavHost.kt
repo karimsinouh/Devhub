@@ -2,23 +2,18 @@ package com.karimsinouh.devhub.ui.main
 
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.foundation.ExperimentalFoundationApi
-import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.unit.dp
-import androidx.navigation.NavArgument
 import androidx.navigation.NavHostController
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.navArgument
-import com.karimsinouh.devhub.data.Post
 import com.karimsinouh.devhub.ui.createNew.CreateNew
 import com.karimsinouh.devhub.ui.editProfile.EditProfile
 import com.karimsinouh.devhub.ui.home.Home
 import com.karimsinouh.devhub.ui.profile.Profile
 import com.karimsinouh.devhub.ui.search.Search
-import com.karimsinouh.devhub.ui.trophies.Trophies
+import com.karimsinouh.devhub.ui.notifications.Notifications
 import com.karimsinouh.devhub.ui.viewPost.ViewPost
 import com.karimsinouh.devhub.ui.viewProfile.ViewProfile
 import com.karimsinouh.devhub.ui.viewUsersList.ViewUsersList
@@ -48,8 +43,8 @@ fun MainNavHost(
             Profile(nav = controller, vm = vm)
         }
 
-        composable(Screen.Trophies.route){
-            Trophies(nav = controller, vm = vm)
+        composable(Screen.Notifications.route){
+            Notifications(nav = controller, vm = vm)
         }
 
         composable(Screen.EditProfile.route){

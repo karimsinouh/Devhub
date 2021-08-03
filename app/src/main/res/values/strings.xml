@@ -35,6 +35,7 @@
     <string name="dribble">Dribble</string>
     <string name="search_for">Search for:</string>
     <string name="ops">Oops!</string>
+    <string name="notifications">Notifications</string>
 
     <string-array name="postTypes">
         <item>Question</item>

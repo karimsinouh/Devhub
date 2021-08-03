@@ -2,9 +2,10 @@ package com.karimsinouh.devhub.utils
 
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Home
+import androidx.compose.material.icons.filled.Notifications
 import androidx.compose.material.icons.filled.Person
 import androidx.compose.material.icons.filled.Search
-import androidx.compose.material.icons.outlined.Edit
+import androidx.compose.material.icons.outlined.*
 import androidx.compose.ui.graphics.vector.ImageVector
 import com.karimsinouh.devhub.R
 
@@ -15,10 +16,10 @@ sealed class Screen(
     val drawable:Int?=null,
 ) {
 
-    object Home: Screen("home", R.string.home, Icons.Default.Home)
-    object Search: Screen("Search",R.string.search,Icons.Default.Search)
-    object Profile: Screen("profile", R.string.profile, Icons.Default.Person)
-    object Trophies: Screen("Trophies",R.string.Trophies,drawable = R.drawable.ic_trophy)
+    object Home: Screen("home", R.string.home, Icons.Outlined.Home)
+    object Search: Screen("Search",R.string.search,Icons.Outlined.Search)
+    object Profile: Screen("profile", R.string.profile, Icons.Outlined.Person)
+    object Notifications: Screen("notifications", R.string.notifications,Icons.Outlined.Notifications)
     object CreateNew:Screen("creaateNew",R.string.createNew)
 
     object Login:Screen("login",R.string.login)
@@ -50,7 +51,7 @@ sealed class Screen(
         }
 
         val bottomNavItems= listOf(
-            Home, Search, Profile, Trophies
+            Home, Search, Profile, Notifications
         )
 
         val drawerItems=listOf(
@@ -58,7 +59,7 @@ sealed class Screen(
         )
 
         private val allItems= listOf(
-            Home, Search, Profile, Trophies, EditProfile, CreateNew, ViewPost, ViewProfile, ViewUsersList
+            Home, Search, Profile, Notifications, EditProfile, CreateNew, ViewPost, ViewProfile, ViewUsersList
         )
     }
 

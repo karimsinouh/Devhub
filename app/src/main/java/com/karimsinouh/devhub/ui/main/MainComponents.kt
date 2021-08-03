@@ -82,7 +82,7 @@ fun MainBottomBar(
                             Icon(painter = painterResource(it.drawable!!) ,null )
                     },
                     label = {
-                        Text(text = stringResource(it.title))
+                        Text(text = stringResource(it.title),maxLines = 1)
                     },
                 )
             }
