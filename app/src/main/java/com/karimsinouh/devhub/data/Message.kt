@@ -12,7 +12,7 @@ data class Message(
     val sender:String?=null,
     val message:String?=null,
     val type:Int?= TYPE_TEXT,
-    val seen:Boolean?=false,
+    var seen:Boolean?=false,
     @DocumentId val id:String?=null,
     @ServerTimestamp val timestamp:Date?=null
 ){
@@ -53,6 +53,13 @@ data class Message(
         map["seen"]=seen!!
         map["type"]=type!!
         return map
+    }
+
+    fun makeAsSeen(chatRoomId:String){
+        val roomReference=Firebase.firestore.collection("chatRooms").document(chatRoomId)
+        roomReference.collection("messages").document(id!!).update("seen",true).addOnCompleteListener {
+            roomReference.update("lastMessage",this.apply { seen=true })
+        }
     }
 
 }

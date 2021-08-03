@@ -11,6 +11,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
@@ -106,12 +107,17 @@ class ChatActivity:ComponentActivity() {
                     contentPadding = PaddingValues(12.dp),
                 ) {
 
-                    items(vm.messages.value){item->
+                    itemsIndexed(vm.messages.value){index,item->
+
+                        val isLastMessage=(index)==0
 
                         if(item.sender==uid)
-                            RightMessage(message = item, isLastOne = false)
-                        else
+                            RightMessage(message = item, isLastOne = isLastMessage)
+                        else{
                             LeftMessage(message = item)
+                            if (isLastMessage && !item.seen!!)
+                                item.makeAsSeen(vm.chatRoomId!!)
+                        }
 
                     }
 
