@@ -33,6 +33,7 @@ fun UserItem(
     Row(
         modifier= Modifier
             .fillMaxWidth()
+            .background(MaterialTheme.colors.surface)
             .clickable(onClick=onClick)
             .padding(12.dp),
         horizontalArrangement = Arrangement.spacedBy(8.dp),

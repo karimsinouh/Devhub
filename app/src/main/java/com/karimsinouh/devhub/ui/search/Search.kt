@@ -6,6 +6,7 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Search
@@ -13,6 +14,7 @@ import androidx.compose.material.icons.outlined.Settings
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringArrayResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
@@ -36,26 +38,8 @@ fun Search(
     Column(
         modifier=Modifier.fillMaxSize()
     ) {
-        TextField(
-            value = vm.query.value,
-            onValueChange = {vm.query.value=it},
-            singleLine = true,
-            trailingIcon = {
-                Row{
-                    IconButton(onClick = { vm.search() }) {
-                        Icon(imageVector = Icons.Outlined.Search, contentDescription = null)
-                    }
-                    Spacer(modifier = Modifier.width(4.dp))
-                    IconButton(onClick = { vm.searchTypeVisible.value=true }) {
-                        Icon(imageVector = Icons.Outlined.Settings, contentDescription = null)
-                    }
-                }
-            },
-            modifier = Modifier
-                .padding(12.dp)
-                .fillMaxWidth(),
-            placeholder={ Text(stringResource(R.string.search)) }
-        )
+
+        SearchTextField(vm)
 
         when(vm.state.value){
             ScreenState.IDLE->
@@ -70,6 +54,7 @@ fun Search(
                             UserItem(user = item) {
                                 nav.navigate(Screen.ViewProfile.constructRoute(item.id!!))
                             }
+                            Divider()
                         }
                     else
                         items(vm.posts.value){item->
@@ -80,7 +65,7 @@ fun Search(
 
                 }
             ScreenState.LOADING -> CenterProgress()
-            ScreenState.ERROR -> MessageScreen(title = "Oops!", message = vm.error)
+            ScreenState.ERROR -> MessageScreen(title = stringResource(R.string.ops), message = vm.error)
             ScreenState.DONE -> Unit
         }
     }
@@ -89,7 +74,7 @@ fun Search(
     if (vm.searchTypeVisible.value)
         AlertDialog(
             onDismissRequest = { vm.searchTypeVisible.value=false },
-            title = { Text(text = "Search for:")},
+            title = { Text(text = stringResource(R.string.search_for))},
             confirmButton = { TextButton(onClick = { vm.searchTypeVisible.value=false }) {
                 Text(text = stringResource(R.string.ok))
             }},
@@ -102,29 +87,37 @@ fun Search(
 
 }
 
+
 @Composable
-fun SearchFilterTools(
-    onTypeClicked:()->Unit,
+private fun SearchTextField(
+    vm:SearchViewModel
 ){
-    Row(
-        modifier= Modifier
-            .fillMaxWidth()
-            .padding(12.dp, 0.dp, 12.dp, 8.dp)
-            .background(MaterialTheme.colors.background),
-        verticalAlignment = Alignment.CenterVertically,
-    ){
+    TextField(
+        value = vm.query.value,
+        onValueChange = {vm.query.value=it},
+        placeholder = { Text(text = stringResource(id = R.string.search))},
+        shape = RoundedCornerShape(8.dp),
+        modifier = Modifier
+            .padding(12.dp)
+            .fillMaxWidth(),
+        trailingIcon = {
+            Row{
 
-        Text(
-            text = "Search Filter",
-            modifier= Modifier.weight(0.9f)
-        )
-
-        IconButton(onClick =onTypeClicked) {
-            Icon(Icons.Outlined.Settings,null)
-        }
-
-
-    }
+                IconButton(onClick = { vm.searchTypeVisible.value=true }) {
+                    Icon(imageVector = Icons.Outlined.Settings, contentDescription = null)
+                }
+                Spacer(modifier = Modifier.width(4.dp))
+                IconButton(onClick = { vm.search() }) {
+                    Icon(imageVector = Icons.Outlined.Search, contentDescription = null)
+                }
+            }
+        },
+        colors=TextFieldDefaults.textFieldColors(
+            unfocusedIndicatorColor = Color.Transparent,
+            focusedIndicatorColor = Color.Transparent
+        ),
+        singleLine = true
+    )
 }
 
 @Composable

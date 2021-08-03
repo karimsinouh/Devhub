@@ -8,6 +8,7 @@ val Primary700 = Color(0xFF2980b9)
 val Teal200 = Color(0xFFe74c3c)
 
 val DeepBlack=Color(0xFF1C262E)
+val DeepDarkBlack=Color(0xFF192127)
 
 val WhiteDark=Color(0xFFecf0f1)
 val WhiteLight=Color(0xFFFFFFFF)

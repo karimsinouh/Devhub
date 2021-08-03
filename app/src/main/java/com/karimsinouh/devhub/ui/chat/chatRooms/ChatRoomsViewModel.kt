@@ -19,8 +19,6 @@ class ChatRoomsViewModel @Inject constructor():ViewModel() {
         loadChatRooms()
     }
 
-    val query= mutableStateOf("")
-
     val chatRooms= mutableStateOf<List<ChatRoom>>(emptyList())
 
     val state= mutableStateOf(ScreenState.LOADING)

@@ -76,7 +76,6 @@ class ChatRoomsActivity:ComponentActivity() {
 
             ScreenState.IDLE->{
                 Column {
-                    SearchTextField()
                     ChatRoomsList()
                 }
             }
@@ -120,32 +119,6 @@ class ChatRoomsActivity:ComponentActivity() {
                 Divider(modifier=Modifier.padding(start = 75.dp,end = 12.dp))
             }
         }
-    }
-
-    @Composable
-    private fun SearchTextField(){
-        TextField(
-            value = vm.query.value,
-            onValueChange = {vm.query.value=it},
-            placeholder = { Text(text = "Search")},
-            shape = RoundedCornerShape(8.dp),
-            modifier = Modifier
-                .padding(12.dp)
-                .fillMaxWidth(),
-            trailingIcon = {
-                IconButton(onClick = {  }) {
-                    Icon(
-                        imageVector = Icons.Outlined.Search,
-                        contentDescription = null,
-                    )
-                }
-            },
-            colors=TextFieldDefaults.textFieldColors(
-                unfocusedIndicatorColor = Color.Transparent,
-                focusedIndicatorColor = Color.Transparent
-            ),
-            singleLine = true
-        )
     }
 
 
