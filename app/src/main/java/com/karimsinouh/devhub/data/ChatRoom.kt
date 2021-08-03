@@ -13,7 +13,7 @@ data class ChatRoom(
     @DocumentId val id:String?=null,
     @ServerTimestamp val createdOn:Date?=null,
 ){
-    fun getLastMessage():Message?{
+    fun lastMessageAsObject():Message?{
         return lastMessage?.let {
             Message(
                 it["sender"] as String,
@@ -39,21 +39,25 @@ data class ChatRoom(
 
     }
 
-    fun getMessages(listener: (Result<List<Message>>) -> Unit){
-        Firebase.firestore.collection("chatRooms/$id/messages").addSnapshotListener { value, error ->
-            if(error!=null){
-                listener(Result(false,null,error.message))
-                return@addSnapshotListener
-            }
-
-            if (value!=null){
-                val messages=value.toObjects(Message::class.java)
-                listener(Result(true,messages))
-            }
-        }
-    }
 
     companion object{
+
+
+        fun getMessages(id:String,listener: (Result<List<Message>>) -> Unit){
+            Firebase.firestore.collection("chatRooms/$id/messages").addSnapshotListener { value, error ->
+                if(error!=null){
+                    listener(Result(false,null,error.message))
+                    return@addSnapshotListener
+                }
+
+                if (value!=null){
+                    val messages=value.toObjects(Message::class.java)
+                    listener(Result(true,messages))
+                }
+            }
+        }
+
+
         fun getChatRoomsOf(id:String,listener:(Result<List<ChatRoom>>)->Unit){
             val ref= Firebase.firestore.collection("chatRooms").whereArrayContains("users",id)
             ref.addSnapshotListener { value, error ->
@@ -69,21 +73,36 @@ data class ChatRoom(
             }
         }
 
-        fun get(myId:String,hisId:String,chatRoomId:String?=null,listener: (Result<ChatRoom>) -> Unit){
-            val ref=Firebase.firestore.collection("chatRooms")
+        fun get(myId:String,hisId:String,listener: (Result<String>) -> Unit){
+            val ref=Firebase.firestore.collection("chatRooms").whereArrayContains("users",myId)
 
-            if (chatRoomId!=null)
-                ref.document(chatRoomId).get()
+            ref.get().addOnCompleteListener { task->
+
+                val chatRooms=task.result?.toObjects(ChatRoom::class.java) ?: emptyList()
+                val commonChatroom=chatRooms.filter { it.users?.contains(hisId)!! }
+                val chatRoomExists=commonChatroom.isNotEmpty()
+
+                if (chatRoomExists){
+                    listener(Result(true,commonChatroom[0].id))
+                }else{
+                    create(myId and hisId){
+                        listener(Result(it.isSuccessful,it.data,it.message))
+                    }
+                }
+
+            }
+        }
+
+        fun create(ids:List<String>,listener:(Result<String>)->Unit){
+            val chatRoom=ChatRoom(ids)
+            Firebase.firestore.collection("chatRooms").add(chatRoom)
                 .addOnCompleteListener {
-                    listener(Result(it.isSuccessful,it.result?.toObject(ChatRoom::class.java),it.exception?.message))
+                    listener(Result(it.isSuccessful,it.result?.id,it.exception?.message))
                 }
-            else
-                ref.whereArrayContains("users",myId).get().addOnCompleteListener { task->
-                    val chatRooms=task.result?.toObjects(ChatRoom::class.java) ?: emptyList()
-                    val arrayWhereHeExists=chatRooms.filter { it.users?.contains(hisId)!! }
-                    val chatRoom=if (arrayWhereHeExists.isEmpty()) null else arrayWhereHeExists[0]
-                    listener(Result(arrayWhereHeExists.isNotEmpty(),chatRoom,"We couldn't find any chatroom"))
-                }
+        }
+
+        private infix fun String.and(secondId:String):List<String> {
+            return listOf(this,secondId)
         }
 
     }

@@ -12,7 +12,7 @@ import javax.inject.Inject
 @HiltViewModel
 class ChatViewModel @Inject constructor() :ViewModel() {
 
-    var chatRoom:ChatRoom?=null
+    var chatRoomId:String?=null
     val user= mutableStateOf<User?>(null)
 
     val state= mutableStateOf(ScreenState.LOADING)
@@ -29,7 +29,7 @@ class ChatViewModel @Inject constructor() :ViewModel() {
     val messages= mutableStateOf<List<Message>>(emptyList())
 
     private fun loadMessages(){
-        chatRoom?.getMessages {
+        ChatRoom.getMessages(chatRoomId!!) {
             if (it.isSuccessful){
                 val result=it.data ?: emptyList()
                 messages.value=result
@@ -50,16 +50,22 @@ class ChatViewModel @Inject constructor() :ViewModel() {
         currentUSerId: String,
         chatRoomId: String? = null
     ){
-        if (chatRoom==null){
-            ChatRoom.get(currentUSerId,user.value?.id!!,chatRoomId){
+
+        this.chatRoomId=chatRoomId
+
+        if(this.chatRoomId==null && chatRoomId==null){
+            ChatRoom.get(currentUSerId,user.value?.id!!){
                 if (it.isSuccessful){
-                    chatRoom=it.data!!
+                    this.chatRoomId=it.data
                     loadMessages()
                 }else{
                     error=it.message?:""
                 }
             }
+        }else if (this.chatRoomId==null && chatRoomId!=null){
+            loadMessages()
         }
+
     }
 
 }
