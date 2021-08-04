@@ -28,7 +28,7 @@ class NotificationsReceiver:FirebaseMessagingService() {
 
     override fun onNewToken(token: String) {
         super.onNewToken(token)
-        User.updateToken(Firebase.auth.currentUser?.uid!!,token)
+        User.updateToken(Firebase.auth.currentUser?.uid!!,token){}
     }
 
     override fun onMessageReceived(p0: RemoteMessage) {

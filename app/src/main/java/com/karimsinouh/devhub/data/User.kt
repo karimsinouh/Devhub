@@ -70,9 +70,12 @@ data class User(
                 }
         }
 
-        fun updateToken(uid:String,token: String){
+        fun updateToken(uid:String,token: String,listener:(isSuccessful:Boolean)->Unit){
             Firebase.firestore.collection("users").document(uid)
                 .update("token",token)
+                .addOnCompleteListener { task->
+                    listener(task.isSuccessful)
+                }
         }
 
     }

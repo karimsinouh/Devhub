@@ -8,6 +8,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
+import com.google.firebase.messaging.ktx.messaging
 import com.karimsinouh.devhub.data.User
 import com.karimsinouh.devhub.ui.main.MainActivity
 import com.karimsinouh.devhub.utils.ScreenState
@@ -34,7 +35,7 @@ class SignUpViewModel @Inject constructor():ViewModel(){
             field=value
         }
 
-    fun signUp(c:Context)=viewModelScope.launch{
+    fun signUp()=viewModelScope.launch{
         val _email=email.value
         val _password=password.value
         val _name=name.value
@@ -58,11 +59,12 @@ class SignUpViewModel @Inject constructor():ViewModel(){
 
         Firebase.auth.createUserWithEmailAndPassword(_email,_password).addOnCompleteListener {
             if (it.isSuccessful){
-                val user= User(it.result?.user?.uid, _name, _email)
+                val uid=it.result?.user?.uid
+                val user= User(uid, _name, _email)
 
                 user.create { docTask->
                     if(docTask.isSuccessful)
-                        screenState.value=ScreenState.DONE
+                        getAndUpdateToken(uid!!)
                     else
                         error=docTask.exception?.message?:""
 
@@ -77,5 +79,18 @@ class SignUpViewModel @Inject constructor():ViewModel(){
 
     }
 
+    private fun getAndUpdateToken(uid:String){
+        Firebase.messaging.token.addOnCompleteListener {
+            if (it.isSuccessful){
+                User.updateToken(uid,it.result!!){updateTask->
+                    if(updateTask){
+                        screenState.value=ScreenState.DONE
+                    }
+                }
+            }else{
+                error=it.exception?.message?:""
+            }
+        }
+    }
 
 }

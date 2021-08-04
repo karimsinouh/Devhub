@@ -104,7 +104,7 @@ fun SignUp(
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password,imeAction = ImeAction.Done),
             visualTransformation = PasswordVisualTransformation(),
             keyboardActions = KeyboardActions(onDone = {
-                vm.signUp(context)
+                vm.signUp()
             }),
             singleLine = true
 
@@ -118,7 +118,7 @@ fun SignUp(
                 text = stringResource(id = R.string.login),
                 modifier = Modifier.fillMaxWidth()
             ) {
-                vm.signUp(context)
+                vm.signUp()
             }
         }
 
