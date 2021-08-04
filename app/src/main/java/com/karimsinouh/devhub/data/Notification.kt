@@ -55,8 +55,8 @@ data class NotificationData(
             .collection("users")
             .document(data.receiverId!!)
             .collection("notifications")
-            .add(this).addOnCompleteListener {
-
+            .add(data).addOnCompleteListener {
+                listener(it.isSuccessful)
             }
     }
 
