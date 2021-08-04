@@ -16,15 +16,17 @@ import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.res.stringResource
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
+import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 import com.karimsinouh.devhub.ui.authentication.AuthenticationActivity
 import com.karimsinouh.devhub.ui.theme.DevhubTheme
 import com.karimsinouh.devhub.ui.theme.DrawerShape
 import com.karimsinouh.devhub.utils.Screen
+import dagger.hilt.internal.GeneratedComponent
 import kotlinx.coroutines.*
 
-class MainActivity : ComponentActivity() {
+class MainActivity : ComponentActivity(){
 
     override fun onStart() {
         super.onStart()
@@ -38,6 +40,7 @@ class MainActivity : ComponentActivity() {
     private lateinit var navController:NavHostController
     private lateinit var scope:CoroutineScope
 
+    @OptIn(ExperimentalPagerApi::class)
     @ExperimentalFoundationApi
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

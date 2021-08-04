@@ -1,5 +1,6 @@
 package com.karimsinouh.devhub.data
 
+import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.DocumentId
 import com.google.firebase.firestore.FieldValue
@@ -36,8 +37,7 @@ data class Reply(
                 }
         }
 
-        fun on(postId: String,replyMessage:String){
-            val user=Firebase.auth.currentUser!!
+        fun on(postId: String,replyMessage:String,user:FirebaseUser){
             val name=user.displayName
             val uid=user.uid
 

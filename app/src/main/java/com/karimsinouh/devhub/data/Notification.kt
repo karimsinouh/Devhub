@@ -11,8 +11,8 @@ data class Notification(
     val content:String?=null,
     val type:Int?=TYPE_FOLLOW,
     val action:String?=null,
-    val picture:String?=null,
     var receiverId:String?=null,
+    val picture:String?=null,
     val seen:Boolean?=false,
     @DocumentId val id:String?=null,
     @ServerTimestamp val date:Date?=null

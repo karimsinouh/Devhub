@@ -8,6 +8,7 @@ import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.navArgument
+import com.google.accompanist.pager.ExperimentalPagerApi
 import com.karimsinouh.devhub.ui.createNew.CreateNew
 import com.karimsinouh.devhub.ui.editProfile.EditProfile
 import com.karimsinouh.devhub.ui.home.Home
@@ -15,10 +16,13 @@ import com.karimsinouh.devhub.ui.profile.Profile
 import com.karimsinouh.devhub.ui.search.Search
 import com.karimsinouh.devhub.ui.notifications.Notifications
 import com.karimsinouh.devhub.ui.viewPost.ViewPost
+import com.karimsinouh.devhub.ui.viewPost.ViewPostViewModel
 import com.karimsinouh.devhub.ui.viewProfile.ViewProfile
 import com.karimsinouh.devhub.ui.viewUsersList.ViewUsersList
 import com.karimsinouh.devhub.utils.Screen
+import dagger.hilt.android.AndroidEntryPoint
 
+@ExperimentalPagerApi
 @ExperimentalFoundationApi
 @OptIn(ExperimentalAnimationApi::class)
 @Composable
@@ -62,7 +66,8 @@ fun MainNavHost(
             })
         ){
             val postId=it.arguments?.getString("postId")
-            ViewPost(nav = controller, postId = postId?:"")
+            //val viewPostViewModel= hiltViewModel<ViewPostViewModel>()
+            ViewPost(nav = controller, postId = postId?:"",)
         }
 
         composable(

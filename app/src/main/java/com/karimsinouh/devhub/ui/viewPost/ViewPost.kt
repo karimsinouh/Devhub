@@ -45,9 +45,9 @@ import com.karimsinouh.devhub.utils.customComposables.StickyHeaderToggle
 import java.util.*
 import androidx.compose.animation.AnimatedVisibility as AnimatedVisibility
 
+@ExperimentalPagerApi
 @ExperimentalAnimationApi
 @ExperimentalFoundationApi
-@OptIn(ExperimentalPagerApi::class)
 @Composable
 fun ViewPost(
     nav:NavController,
@@ -59,8 +59,7 @@ fun ViewPost(
         vm.loadPost(postId)
     }
 
-    //current user's id
-    val uid=Firebase.auth.currentUser?.uid!!
+    val currentUser=Firebase.auth.currentUser
     val pagerState= rememberPagerState(pageCount = vm.post.value?.images?.size?:0)
 
     when(vm.state.value){
@@ -85,7 +84,7 @@ fun ViewPost(
                     TopSection(
                         user=vm.user.value,
                         post=vm.post.value!!,
-                        uid=uid,
+                        uid=currentUser?.uid!!,
                         nav=nav
                     )
                 }
@@ -115,7 +114,7 @@ fun ViewPost(
                             value = vm.reply.value,
                             onValueChange = { vm.reply.value=it },
                             onSubmit = {
-                                vm.reply(postId)
+                                vm.reply(currentUser!!)
                             }
                         )
                     }
