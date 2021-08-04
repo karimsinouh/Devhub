@@ -1,5 +1,6 @@
 package com.karimsinouh.devhub.ui.items
 
+import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -56,18 +57,19 @@ fun NotificationItem(
                 contentAlignment = Alignment.Center
             ) {
 
-                if(notification.type!=Notification.TYPE_FOLLOW)
-                    Icon(
-                        imageVector = icon,
-                        contentDescription = null,
-                        tint = MaterialTheme.colors.onPrimary
-                    )
-                else
+                if(notification.type==Notification.TYPE_MESSAGE || notification.type==Notification.TYPE_FOLLOW)
                     ProfilePicture(
                         size = 55.dp,
                         url = notification.picture!!,
                         isOnline = false
                     )
+                else
+                    Icon(
+                        imageVector = icon,
+                        contentDescription = null,
+                        tint = MaterialTheme.colors.onPrimary
+                    )
+
             }
 
 

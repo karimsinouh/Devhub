@@ -81,6 +81,7 @@ class EditProfileViewModel @Inject constructor():ViewModel() {
         map["name"]=name.value
         map["bio"]=bio.value
         map["skills"]=getSkills()
+        map["picture"]=picture.value
 
         socialNetwork.value.let {
             map["github"]=it?.get("github")?:""

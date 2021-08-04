@@ -74,7 +74,11 @@ class ChatActivity:ComponentActivity() {
                 window.statusBarColor=MaterialTheme.colors.surface.toArgb()
 
                 Scaffold (
-                    topBar = { ChatTopBar(vm.user.value!!) },
+                    topBar = {
+                        vm.user.value?.let {
+                            ChatTopBar(it)
+                        }
+                    },
                     bottomBar = {MessageInput()},
                     content = {
                         Content()
@@ -87,16 +91,22 @@ class ChatActivity:ComponentActivity() {
 
         }
 
-        val user:User=intent.getSerializableExtra("user") as User
         val chatRoomId=intent.getStringExtra("chatRoomId")
 
-        if(user.id!=null){
-            vm.user.value=user
-            vm.loadChatRoom(chatRoomId)
-        }else{
-            val hisId=intent.getStringExtra("hisId")!!
-            vm.loadUserFirst(hisId,chatRoomId)
+        intent.getSerializableExtra("user").let { user->
+
+            if(user!=null){
+                vm.user.value=user as User
+                vm.loadChatRoom(chatRoomId)
+            }else{
+                val hisId=intent.getStringExtra("userId")!!
+                vm.loadUserFirst(hisId,chatRoomId)
+            }
+
         }
+
+
+
 
     }
 
