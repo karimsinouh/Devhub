@@ -49,12 +49,14 @@ class ChatActivity:ComponentActivity() {
     companion object{
         fun open(
             c: Context,
-            user: User,
-            chatRoomId: String? = null
+            user: User?=null,
+            chatRoomId: String? = null,
+            userId:String?=null,
         ){
             val intent= Intent(c,ChatActivity::class.java)
             intent.putExtra("user",user)
             intent.putExtra("chatRoomId",chatRoomId)
+            intent.putExtra("userId",userId)
             c.startActivity(intent)
         }
     }
@@ -85,11 +87,16 @@ class ChatActivity:ComponentActivity() {
 
         }
 
-        vm.user.value=intent.getSerializableExtra("user") as User
-
+        val user:User=intent.getSerializableExtra("user") as User
         val chatRoomId=intent.getStringExtra("chatRoomId")
 
-        vm.loadChatRoom(uid,chatRoomId)
+        if(user.id!=null){
+            vm.user.value=user
+            vm.loadChatRoom(chatRoomId)
+        }else{
+            val hisId=intent.getStringExtra("hisId")!!
+            vm.loadUserFirst(hisId,chatRoomId)
+        }
 
     }
 

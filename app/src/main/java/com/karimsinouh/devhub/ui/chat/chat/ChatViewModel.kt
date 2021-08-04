@@ -2,6 +2,8 @@ package com.karimsinouh.devhub.ui.chat.chat
 
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.ktx.Firebase
 import com.karimsinouh.devhub.data.ChatRoom
 import com.karimsinouh.devhub.data.Message
 import com.karimsinouh.devhub.data.User
@@ -13,8 +15,11 @@ import javax.inject.Inject
 class ChatViewModel @Inject constructor() :ViewModel() {
 
     var chatRoomId:String?=null
+    val currentUSer=Firebase.auth.currentUser!!
+
     val user= mutableStateOf<User?>(null)
     val state= mutableStateOf(ScreenState.LOADING)
+
     var error:String ?= ""
         set(value) {
             state.value=if (value!="")
@@ -54,14 +59,13 @@ class ChatViewModel @Inject constructor() :ViewModel() {
     }
 
     fun loadChatRoom(
-        currentUSerId: String,
         chatRoomId: String? = null
     ){
 
         this.chatRoomId=chatRoomId
 
         if(this.chatRoomId==null && chatRoomId==null){
-            ChatRoom.get(currentUSerId,user.value?.id!!){
+            ChatRoom.get(currentUSer.uid,user.value?.id!!){
                 if (it.isSuccessful){
                     this.chatRoomId=it.data
                     loadMessages()
@@ -75,4 +79,13 @@ class ChatViewModel @Inject constructor() :ViewModel() {
 
     }
 
+    fun loadUserFirst(uid:String,chatRoomId: String?=null){
+        User.get(uid){
+            if(it.isSuccessful){
+                loadChatRoom(chatRoomId)
+            }else{
+                error=it.message
+            }
+        }
+    }
 }

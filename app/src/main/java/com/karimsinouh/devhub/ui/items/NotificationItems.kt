@@ -36,8 +36,8 @@ fun NotificationItem(
             modifier = Modifier
                 .fillMaxWidth()
                 .background(MaterialTheme.colors.surface)
-                .padding(12.dp)
-                .clickable(onClick=onClick),
+                .clickable(onClick=onClick)
+                .padding(12.dp),
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.spacedBy(12.dp)
         ) {

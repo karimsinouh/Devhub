@@ -25,6 +25,7 @@ data class Notification(
         const val TYPE_UP_VOTE=1
         const val TYPE_DOWN_VOTE=2
         const val TYPE_REPLY=3
+        const val TYPE_MESSAGE=4
 
         fun fromMap(map:Map<String,String>):Notification{
             return Notification(
