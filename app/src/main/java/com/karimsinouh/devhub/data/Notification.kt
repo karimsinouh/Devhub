@@ -1,6 +1,8 @@
 package com.karimsinouh.devhub.data
 
+import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.DocumentId
+import com.google.firebase.firestore.Query
 import com.google.firebase.firestore.ServerTimestamp
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
@@ -34,11 +36,35 @@ data class Notification(
                 map["receiverId"]
             )
         }
+
+        fun get(uid:String,listener:(Result<List<Notification>>)->Unit){
+            val ref=Firebase.firestore
+                .collection("users/$uid/notifications")
+                .orderBy("date",Query.Direction.DESCENDING)
+
+            ref.addSnapshotListener { value, error ->
+                if(error!=null){
+                    listener(Result(false,null,error.message))
+                    return@addSnapshotListener
+                }
+
+                if (value!=null){
+                    val notifications=value.toObjects(Notification::class.java)
+                    listener(Result(true,notifications))
+                }
+            }
+        }
+
     }
 
     fun asData(to:String?):NotificationData =
         NotificationData(to,this)
 
+    fun makeAsSeen(){
+        Firebase.firestore
+            .document("users/$receiverId/notifications/$id")
+            .update("seen",true)
+    }
 
 }
 

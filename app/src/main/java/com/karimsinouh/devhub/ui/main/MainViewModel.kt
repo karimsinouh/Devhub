@@ -8,6 +8,9 @@ import androidx.compose.material.SnackbarHostState
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.ktx.Firebase
+import com.karimsinouh.devhub.data.Notification
 import com.karimsinouh.devhub.data.Post
 import com.karimsinouh.devhub.data.User
 import com.karimsinouh.devhub.utils.Screen
@@ -18,6 +21,7 @@ import kotlinx.coroutines.launch
 class MainViewModel:ViewModel() {
 
     var editProfileHasBeenOpened=false
+    val currentUid= Firebase.auth.currentUser?.uid!!
 
     init {
 
@@ -27,6 +31,9 @@ class MainViewModel:ViewModel() {
 
             delay(500)
             loadUser().join()
+
+            delay(1000)
+            loadNotifications().join()
         }
 
 
@@ -44,6 +51,10 @@ class MainViewModel:ViewModel() {
     val homeState= mutableStateOf(ScreenState.LOADING)
     val posts= mutableStateOf<List<Post>>(emptyList())
 
+    //notifications
+    val notifications= mutableStateOf<List<Notification>>(emptyList())
+    val notificationsState= mutableStateOf(ScreenState.LOADING)
+
     val scaffoldState=ScaffoldState(
         DrawerState(DrawerValue.Closed),
         SnackbarHostState()
@@ -55,6 +66,17 @@ class MainViewModel:ViewModel() {
                 return true
         }
         return false
+    }
+
+    private fun loadNotifications()=viewModelScope.launch{
+        Notification.get(currentUid){
+            if(it.isSuccessful){
+                notifications.value=it.data?: emptyList()
+                notificationsState.value=ScreenState.IDLE
+            }else{
+                error.value=it.message
+            }
+        }
     }
 
     private fun loadPosts()=viewModelScope.launch{
@@ -69,7 +91,7 @@ class MainViewModel:ViewModel() {
     }
 
     private fun loadUser()= viewModelScope.launch {
-        User.get(realtime = true){
+        User.get(currentUid, true){
             if (it.isSuccessful) {
                 profileState.value=ScreenState.IDLE
                 user.value = it.data!!
