@@ -23,8 +23,6 @@ data class Notification(
         const val TYPE_UP_VOTE=1
         const val TYPE_DOWN_VOTE=2
         const val TYPE_REPLY=3
-        const val TYPE_UP_VOTE_REPLY=4
-        const val TYPE_DOWN_VOTE_REPLY=5
 
         fun fromMap(map:Map<String,String>):Notification{
             return Notification(
@@ -38,7 +36,7 @@ data class Notification(
         }
     }
 
-    fun asData(to:String):NotificationData =
+    fun asData(to:String?):NotificationData =
         NotificationData(to,this)
 
 
@@ -46,7 +44,7 @@ data class Notification(
 
 
 data class NotificationData(
-    val to:String,
+    var to:String?=null,
     val data:Notification
 ){
 

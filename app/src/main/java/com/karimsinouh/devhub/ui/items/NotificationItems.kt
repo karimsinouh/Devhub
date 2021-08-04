@@ -44,9 +44,7 @@ fun NotificationItem(
 
             val icon=when(notification.type!!){
                 Notification.TYPE_DOWN_VOTE->Icons.Default.KeyboardArrowDown
-                Notification.TYPE_DOWN_VOTE_REPLY->Icons.Default.KeyboardArrowDown
                 Notification.TYPE_UP_VOTE->Icons.Default.KeyboardArrowUp
-                Notification.TYPE_UP_VOTE_REPLY->Icons.Default.KeyboardArrowUp
                 else->Icons.Default.Notifications
             }
 

@@ -25,25 +25,28 @@ class NotificationsRepository @Inject constructor(
         const val CONTENT_TYPE = "application/json"
     }
 
-    fun storeNotification(notification: Notification){
+    fun sendNotification(notification: NotificationData){
 
-        User.get(notification.receiverId) {
-            if(it.isSuccessful && it.data?.token!=null){
-
-                val notificationData=notification.asData(it.data.token)
-                notificationData.storeInDatabase { isSuccessful ->
-                    if(isSuccessful){
-                        CoroutineScope(Dispatchers.IO).launch {
-                            notificationData.push()
-                        }
-                    }
+        if(notification.to!=null)
+            storeIt(notification)
+        else
+            User.get(notification.data.receiverId) {
+                if(it.isSuccessful && it.data?.token!=null){
+                    notification.to=it.data.token
+                    storeIt(notification)
                 }
+            }
+    }
 
+    private fun storeIt(notification: NotificationData){
+        notification.storeInDatabase { isSuccessful ->
+            if(isSuccessful){
+                notification.push()
             }
         }
     }
 
-    private suspend fun NotificationData.push(){
+    private fun NotificationData.push()= CoroutineScope(Dispatchers.IO).launch{
         val response=client.post<HttpResponse>("https://fcm.googleapis.com/fcm/send"){
             headers {
                 header("Authorization","key=$SERVER_KEY")

@@ -59,7 +59,6 @@ fun ViewPost(
         vm.loadPost(postId)
     }
 
-    val currentUser=Firebase.auth.currentUser
     val pagerState= rememberPagerState(pageCount = vm.post.value?.images?.size?:0)
 
     when(vm.state.value){
@@ -82,9 +81,8 @@ fun ViewPost(
                 //top section
                 item {
                     TopSection(
-                        user=vm.user.value,
-                        post=vm.post.value!!,
-                        uid=currentUser?.uid!!,
+                        vm=vm,
+                        uid=vm.currentUser.uid,
                         nav=nav
                     )
                 }
@@ -114,7 +112,7 @@ fun ViewPost(
                             value = vm.reply.value,
                             onValueChange = { vm.reply.value=it },
                             onSubmit = {
-                                vm.reply(currentUser!!)
+                                vm.reply()
                             }
                         )
                     }
@@ -135,11 +133,14 @@ fun ViewPost(
 
 @Composable
 private fun TopSection(
-    user:User?=null,
-    post:Post,
+    vm:ViewPostViewModel,
     uid:String,
     nav:NavController,
 ){
+
+    val post=vm.post.value!!
+    val user=vm.user.value
+
     Row {
 
         val voteType=when{
@@ -154,9 +155,12 @@ private fun TopSection(
             votes = votes,
             onUpvote = {
                 post.voteUp(uid)
+                vm.onUpVote()
             },
             onDownVote = {
                 post.voteDown(uid)
+                vm.onDownVote()
+
             },
             voteType = voteType
         )
