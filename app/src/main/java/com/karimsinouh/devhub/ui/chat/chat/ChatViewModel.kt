@@ -82,16 +82,16 @@ class ChatViewModel @Inject constructor(
 
         this.chatRoomId=chatRoomId
 
-        if(this.chatRoomId==null && chatRoomId==null){
+        if(this.chatRoomId==null && chatRoomId==null)
             ChatRoom.get(currentUSer.uid,user.value?.id!!){
                 if (it.isSuccessful){
                     this.chatRoomId=it.data
                     loadMessages()
-                }else{
+                }else
                     error=it.message?:""
-                }
+
             }
-        }else if (this.chatRoomId!=null){
+        else if (this.chatRoomId!=null){
             loadMessages()
         }
 

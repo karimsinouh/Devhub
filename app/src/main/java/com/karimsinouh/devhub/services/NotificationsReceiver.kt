@@ -15,6 +15,7 @@ import com.karimsinouh.devhub.R
 import com.karimsinouh.devhub.data.Notification
 import com.karimsinouh.devhub.data.User
 import com.karimsinouh.devhub.ui.chat.chat.ChatActivity
+import com.karimsinouh.devhub.ui.main.MainActivity
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 import kotlin.random.Random
@@ -52,24 +53,32 @@ class NotificationsReceiver:FirebaseMessagingService() {
 
         if (notification.type==Notification.TYPE_MESSAGE)
             notificationBuilder.setContentIntent(getPendingIntentForChat(notification.action!!))
+        else
+            notificationBuilder.setContentIntent(getPendingIntentForPost(notification.type!!,notification.action!!))
 
         val randomId= Random.nextInt()
         manager.notify(randomId,notificationBuilder.build())
 
     }
 
-    fun getPendingIntentForChat(_action:String):PendingIntent{
+    private fun getPendingIntentForChat(_action:String):PendingIntent{
         val action=_action.split("}")
         val userId=action[0]
         val chatRoom=action[1]
         val intent=Intent(this,ChatActivity::class.java).apply {
             putExtra("userId",userId)
-            putExtra("chatRoom",chatRoom)
+            putExtra("chatRoomId",chatRoom)
         }
         return PendingIntent.getActivity(this,1,intent,PendingIntent.FLAG_UPDATE_CURRENT)
     }
 
-    //fun getPendingIntentForPost():PendingIntent{}
+    private fun getPendingIntentForPost(type:Int,actionId:String):PendingIntent{
+        val intent=Intent(this,MainActivity::class.java).apply {
+            action=type.toString()
+            putExtra("actionId",actionId)
+        }
+        return PendingIntent.getActivity(this,2,intent,PendingIntent.FLAG_UPDATE_CURRENT)
+    }
 
 
     @RequiresApi(Build.VERSION_CODES.O)

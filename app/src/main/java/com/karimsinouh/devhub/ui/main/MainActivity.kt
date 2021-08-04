@@ -19,6 +19,7 @@ import androidx.navigation.compose.rememberNavController
 import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
+import com.karimsinouh.devhub.data.Notification
 import com.karimsinouh.devhub.ui.authentication.AuthenticationActivity
 import com.karimsinouh.devhub.ui.theme.DevhubTheme
 import com.karimsinouh.devhub.ui.theme.DrawerShape
@@ -84,15 +85,7 @@ class MainActivity : ComponentActivity(){
 
                     MainNavHost(controller = navController, vm = vm)
 
-                    LaunchedEffect(true){
-                        delay(100)
-                        intent.action?.let { action->
-                            if (action=="completeProfile" && !vm.editProfileHasBeenOpened){
-                                vm.editProfileHasBeenOpened=true
-                                navController.navigate(Screen.EditProfile.route)
-                            }
-                        }
-                    }
+                    RedirectUser()
 
                 }
             }
@@ -101,6 +94,40 @@ class MainActivity : ComponentActivity(){
 
     }
 
+    @Composable
+    private fun RedirectUser() {
+        LaunchedEffect(true){
+            delay(100)
+            intent.action?.let { action->
+
+                val actionId=intent.getStringExtra("actionId")?:""
+
+                when(action){
+
+                    "completeProfile"->{
+                        if (!vm.editProfileHasBeenOpened){
+                            vm.editProfileHasBeenOpened=true
+                            navController.navigate(Screen.EditProfile.route)
+                        }
+                    }
+
+                    Notification.TYPE_DOWN_VOTE.toString()->
+                        navController.navigate(Screen.ViewPost.constructRoute(actionId))
+
+                    Notification.TYPE_UP_VOTE.toString()->
+                        navController.navigate(Screen.ViewPost.constructRoute(actionId))
+
+                    Notification.TYPE_REPLY.toString()->
+                        navController.navigate(Screen.ViewPost.constructRoute(actionId))
+
+                    Notification.TYPE_FOLLOW.toString()->
+                        navController.navigate(Screen.ViewProfile.constructRoute(actionId))
+
+                }
+
+            }
+        }
+    }
 
     @Composable
     fun OnDestinationChanges(){
