@@ -1,5 +1,6 @@
 package com.karimsinouh.devhub.ui.profile
 
+import android.content.Context
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -37,6 +38,7 @@ import com.karimsinouh.devhub.ui.viewUsersList.VIEW_FOLLOWERS
 import com.karimsinouh.devhub.ui.viewUsersList.VIEW_FOLLOWING
 import com.karimsinouh.devhub.utils.Screen
 import com.karimsinouh.devhub.utils.ScreenState
+import com.karimsinouh.devhub.utils.VisitSocialMediaLink
 import com.karimsinouh.devhub.utils.customComposables.CenterProgress
 import com.karimsinouh.devhub.utils.customComposables.ChipsList
 import com.karimsinouh.devhub.utils.customComposables.OutlinedRoundedButton
@@ -171,10 +173,12 @@ fun UserInfoSection(
 
         //social network
         Spacer(modifier = Modifier.height(4.dp))
+
         SocialNetwork(
             github = user.github,
             behance = user.behance,
-            dribble = user.dribble
+            dribble = user.dribble,
+            context=context
         )
 
         Spacer(modifier = Modifier.height(12.dp))
@@ -232,6 +236,7 @@ fun SocialNetwork(
     github:String?="",
     behance:String?="",
     dribble:String?="",
+    context:Context,
 ){
 
     Column(
@@ -242,7 +247,7 @@ fun SocialNetwork(
                 icon = R.drawable.ic_github,
                 text = github!!
             ) {
-
+                VisitSocialMediaLink.github(context,github)
             }
 
         if (behance!="")
@@ -250,7 +255,7 @@ fun SocialNetwork(
                 icon = R.drawable.ic_behance,
                 text = behance!!
             ) {
-
+                VisitSocialMediaLink.behance(context,behance)
             }
 
         if (dribble!="")
@@ -258,7 +263,7 @@ fun SocialNetwork(
                 icon = R.drawable.ic_dribble,
                 text = dribble!!
             ) {
-
+                VisitSocialMediaLink.dribble(context,dribble)
             }
     }
 }
