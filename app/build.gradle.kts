@@ -64,7 +64,7 @@ dependencies {
     androidTestImplementation("androidx.test.ext:junit:1.1.3")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.4.0")
 
-    implementation("androidx.navigation:navigation-compose:2.4.0-alpha05")
+    implementation("androidx.navigation:navigation-compose:2.4.0-alpha06")
 
     //dependency injection
     implementation ("com.google.dagger:hilt-android:2.38.1")
@@ -80,6 +80,7 @@ dependencies {
     val accompanistVersion="0.16.0"
     implementation ("com.google.accompanist:accompanist-pager:$accompanistVersion")
     implementation("com.google.accompanist:accompanist-pager-indicators:$accompanistVersion")
+    implementation("com.google.accompanist:accompanist-navigation-animation:$accompanistVersion")
 
     api ("com.theartofdev.edmodo:android-image-cropper:2.8.+")
 

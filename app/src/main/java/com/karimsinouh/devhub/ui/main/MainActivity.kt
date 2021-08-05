@@ -5,6 +5,7 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
+import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.Column
 import androidx.compose.material.*
@@ -19,6 +20,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
+import com.google.accompanist.navigation.animation.rememberAnimatedNavController
 import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
@@ -45,6 +47,7 @@ class MainActivity : ComponentActivity(){
     private lateinit var navController:NavHostController
     private lateinit var scope:CoroutineScope
 
+    @ExperimentalAnimationApi
     @OptIn(ExperimentalPagerApi::class)
     @ExperimentalFoundationApi
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -52,7 +55,7 @@ class MainActivity : ComponentActivity(){
 
         setContent {
 
-            navController= rememberNavController()
+            navController= rememberAnimatedNavController()
             scope= rememberCoroutineScope()
 
             OnDestinationChanges()
