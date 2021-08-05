@@ -47,7 +47,7 @@ class ChatViewModel @Inject constructor(
                     title="${currentUSer.displayName} sent you a message",
                     content = message.value,
                     type=Notification.TYPE_MESSAGE,
-                    action = "$currentUSer}$chatRoomId",
+                    action = "${currentUSer.uid}}$chatRoomId",
                     receiverId = user.value?.id,
                     picture = currentUSer.photoUrl.toString()
                 )
@@ -101,7 +101,7 @@ class ChatViewModel @Inject constructor(
         User.get(uid){
             if(it.isSuccessful){
                 user.value=it.data
-                Log.wtf("wtf",it.data.toString())
+                Log.wtf("wtf","uid $uid")
                 loadChatRoom(chatRoomId)
             }else{
                 error=it.message

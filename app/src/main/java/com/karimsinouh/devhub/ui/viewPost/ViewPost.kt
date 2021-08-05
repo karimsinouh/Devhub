@@ -59,8 +59,6 @@ fun ViewPost(
         vm.loadPost(postId)
     }
 
-    val pagerState= rememberPagerState(pageCount = vm.post.value?.images?.size?:0)
-
     when(vm.state.value){
 
         ScreenState.IDLE->{
@@ -74,7 +72,7 @@ fun ViewPost(
 
                 if (vm.post.value?.images?.isNotEmpty()!!){
                     item {
-                        PicturesPager(state = pagerState, pictures = vm.post.value?.images!!)
+                        PicturesPager(pictures = vm.post.value?.images!!)
                     }
                 }
 
@@ -264,9 +262,11 @@ fun UpDownVote(
 @OptIn(ExperimentalPagerApi::class)
 @Composable
 private fun PicturesPager(
-    state:PagerState,
     pictures:List<String>
 ){
+
+    val state= rememberPagerState(pageCount = pictures.size)
+
     Column {
         HorizontalPager(state = state) {page->
             val painter= rememberImagePainter(pictures[page])

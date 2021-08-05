@@ -82,7 +82,7 @@ fun NotificationItem(
                 )
 
                 Text(
-                    text = notification.date.toString(),
+                    text = notification.content!!,
                     fontStyle = FontStyle.Italic,
                     fontSize = 12.sp,
                     maxLines = 1,

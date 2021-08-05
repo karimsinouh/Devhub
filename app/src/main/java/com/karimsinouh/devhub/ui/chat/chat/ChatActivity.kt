@@ -3,6 +3,7 @@ package com.karimsinouh.devhub.ui.chat.chat
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
@@ -74,11 +75,7 @@ class ChatActivity:ComponentActivity() {
                 window.statusBarColor=MaterialTheme.colors.surface.toArgb()
 
                 Scaffold (
-                    topBar = {
-                        vm.user.value?.let {
-                            ChatTopBar(it)
-                        }
-                    },
+                    topBar = { ChatTopBar() },
                     bottomBar = {MessageInput()},
                     content = {
                         Content()
@@ -95,6 +92,7 @@ class ChatActivity:ComponentActivity() {
 
         intent.getSerializableExtra("user").let { user->
 
+            Log.d("wtf","user: $user")
             if(user!=null){
                 vm.user.value=user as User
                 vm.loadChatRoom(chatRoomId)
@@ -152,7 +150,7 @@ class ChatActivity:ComponentActivity() {
     }
 
     @Composable
-    private fun ChatTopBar(user:User) {
+    private fun ChatTopBar() {
         TopAppBar(
             backgroundColor = MaterialTheme.colors.surface,
             contentColor = MaterialTheme.colors.onSurface,
@@ -163,27 +161,32 @@ class ChatActivity:ComponentActivity() {
                 Icon(Icons.Outlined.ArrowBack,null)
             }
 
-            ProfilePicture(
-                url = user.picture!!,
-                size = 40.dp,
-                isOnline = false
-            )
+            val user=vm.user.value
 
+            if(user!=null){
 
-            Spacer(modifier = Modifier.width(8.dp))
-            Column {
-                Text(
-                    text = user.name?:"Some User",
-                    fontSize = 16.sp
+                ProfilePicture(
+                    url = user.picture!!,
+                    size = 40.dp,
+                    isOnline = false
                 )
-                if(user.online!!){
+
+                Spacer(modifier = Modifier.width(8.dp))
+                Column {
                     Text(
-                        text = "Online",
-                        fontSize = 12.sp,
-                        color=MaterialTheme.colors.onSurface.copy(alpha = 0.8f)
+                        text = user.name?:"Some User",
+                        fontSize = 16.sp
                     )
+                    if(user.online!!){
+                        Text(
+                            text = "Online",
+                            fontSize = 12.sp,
+                            color=MaterialTheme.colors.onSurface.copy(alpha = 0.8f)
+                        )
+                    }
                 }
             }
+
         }
     }
 
