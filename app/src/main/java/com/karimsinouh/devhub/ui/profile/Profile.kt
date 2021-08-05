@@ -67,7 +67,7 @@ fun Profile(
                        SwipeAblePostItem(
                            post=item,
                            onEdit = {
-                                    //TODO::Navigate to edit item
+                                    nav.navigate(Screen.EditPost.constructRoute(item.id!!))
                            },
                            onDelete = {
                                       vm.postToDelete.value=item

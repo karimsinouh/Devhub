@@ -10,6 +10,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.navArgument
 import com.google.accompanist.pager.ExperimentalPagerApi
 import com.karimsinouh.devhub.ui.createNew.CreateNew
+import com.karimsinouh.devhub.ui.editPost.EditPost
 import com.karimsinouh.devhub.ui.editProfile.EditProfile
 import com.karimsinouh.devhub.ui.home.Home
 import com.karimsinouh.devhub.ui.profile.Profile
@@ -88,6 +89,14 @@ fun MainNavHost(
             val uid=it.arguments?.getString("uid")!!
             val action=it.arguments?.getInt("action")!!
             ViewUsersList(nav = controller, uid = uid, action =action)
+        }
+
+        composable(
+            route = Screen.EditPost.route,
+            arguments = listOf(navArgument("postId"){type=NavType.StringType})
+        ){
+            val postId=it.arguments?.getString("postId")!!
+            EditPost(postId = postId, nav =controller)
         }
 
     }

@@ -179,4 +179,12 @@ data class Post(
             }
     }
 
+    fun update(map: HashMap<String, Any>, function: (Boolean) -> Unit) {
+        Firebase.firestore.collection("posts").document(id!!)
+            .update(map)
+            .addOnCompleteListener {
+                function(it.isSuccessful)
+            }
+    }
+
 }

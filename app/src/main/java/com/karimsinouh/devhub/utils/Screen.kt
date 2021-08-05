@@ -40,6 +40,12 @@ sealed class Screen(
         fun constructRoute(uid:String,action:Int)= "viewUsersList?uid=$uid&action=$action"
     }
 
+    object EditPost:Screen("editPost/{postId}",R.string.editPost){
+        fun constructRoute(postId:String)=route.split("/")[0]+"/"+postId
+    }
+
+
+
     object All{
 
         fun map():Map<String,Screen>{
@@ -59,7 +65,16 @@ sealed class Screen(
         )
 
         private val allItems= listOf(
-            Home, Search, Profile, Notifications, EditProfile, CreateNew, ViewPost, ViewProfile, ViewUsersList
+            Home,
+            Search,
+            Profile,
+            Notifications,
+            EditProfile,
+            CreateNew,
+            ViewPost,
+            ViewProfile,
+            ViewUsersList,
+            EditPost
         )
     }
 

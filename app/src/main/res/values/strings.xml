@@ -36,6 +36,7 @@
     <string name="search_for">Search for:</string>
     <string name="ops">Oops!</string>
     <string name="notifications">Notifications</string>
+    <string name="editPost">Edit Post</string>
 
     <string-array name="postTypes">
         <item>Question</item>
