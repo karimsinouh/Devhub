@@ -63,7 +63,7 @@ fun Profile(
                        SkillsSection(vm.user.value?.skills?: emptyList())
                    }
 
-                   items(vm.userPosts.value){item->
+                   items(vm.userPosts.value,key={item->item.id!!}){item->
                        SwipeAblePostItem(
                            post=item,
                            onEdit = {
@@ -86,7 +86,10 @@ fun Profile(
         AlertDialog(
             onDismissRequest = { vm.postToDelete.value=null },
             title={ Text(text = "Delete") },
-            confirmButton = { TextButton(onClick = { vm.postToDelete.value = null }) {
+            confirmButton = { TextButton(onClick = {
+                it.delete()
+                vm.postToDelete.value = null
+            }) {
                 Text(text = "Delete")
             } },
             text = { Text(text = "Please confirm that you want to delete this post\n${it.title}") }

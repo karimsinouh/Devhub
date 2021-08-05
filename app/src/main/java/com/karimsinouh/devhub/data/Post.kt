@@ -8,6 +8,7 @@ import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.*
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
+import com.google.firebase.storage.ktx.storage
 import java.util.*
 
 data class Post(
@@ -165,6 +166,17 @@ data class Post(
             }
         }
 
+    }
+
+    fun delete(){
+        Firebase.firestore.collection("posts").document(id!!)
+            .delete().addOnSuccessListener {
+                images?.let { imagesList->
+                    imagesList.forEach { imageUrl->
+                        Firebase.storage.getReferenceFromUrl(imageUrl).delete()
+                    }
+                }
+            }
     }
 
 }
