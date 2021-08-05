@@ -2,16 +2,17 @@ package com.karimsinouh.devhub.ui.main
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import com.karimsinouh.devhub.R
 import androidx.compose.material.icons.filled.Menu
+import androidx.compose.material.icons.outlined.Notifications
 import androidx.compose.material.icons.outlined.Send
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
@@ -20,6 +21,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.karimsinouh.devhub.ui.chat.chatRooms.ChatRoomsActivity
+import com.karimsinouh.devhub.ui.theme.Red
 import com.karimsinouh.devhub.ui.theme.Shapes
 import com.karimsinouh.devhub.utils.Screen
 
@@ -134,5 +136,19 @@ fun MainDrawer(
                 .clickable(onClick = onLogOut)
         )
 
+    }
+}
+
+@Composable
+fun NotificationsActiveIcon(){
+    Box(contentAlignment = Alignment.Center) {
+        Icon(imageVector = Icons.Outlined.Notifications, contentDescription = null)
+        Box(
+            modifier = Modifier
+                .size(10.dp)
+                .clip(CircleShape)
+                .background(Red)
+                .align(Alignment.TopEnd),
+        )
     }
 }

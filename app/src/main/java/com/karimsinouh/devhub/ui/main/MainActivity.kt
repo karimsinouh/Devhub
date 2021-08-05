@@ -6,6 +6,7 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
 import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.layout.Column
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
@@ -13,7 +14,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.graphics.toArgb
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.google.accompanist.pager.ExperimentalPagerApi
@@ -23,6 +26,7 @@ import com.karimsinouh.devhub.data.Notification
 import com.karimsinouh.devhub.ui.authentication.AuthenticationActivity
 import com.karimsinouh.devhub.ui.theme.DevhubTheme
 import com.karimsinouh.devhub.ui.theme.DrawerShape
+import com.karimsinouh.devhub.ui.theme.Red
 import com.karimsinouh.devhub.utils.Screen
 import dagger.hilt.internal.GeneratedComponent
 import kotlinx.coroutines.*
@@ -162,16 +166,59 @@ class MainActivity : ComponentActivity(){
 
     @Composable
     private fun BottomBarSection(){
-        MainBottomBar(
-            selectedScreenRoute = vm.currentScreen.value.route,
-            onNavigation = {
-                navController.navigate(it.route){
-                    launchSingleTop=true
-                    popUpTo(Screen.Home.route)
+
+        val selectedScreenRoute = vm.currentScreen.value.route
+
+        Column {
+            Divider()
+            BottomNavigation(
+                backgroundColor = MaterialTheme.colors.surface,
+                contentColor = MaterialTheme.colors.onSurface,
+                elevation = 0.dp
+            ) {
+                Screen.All.bottomNavItems.forEach {
+                    BottomNavigationItem(
+                        selected = it.route==selectedScreenRoute,
+                        onClick = {
+                            navController.navigate(it.route){
+                                launchSingleTop=true
+                                popUpTo(Screen.Home.route)
+                            }
+                        },
+                        alwaysShowLabel = false,
+                        icon={
+
+                            if(it.route==Screen.Notifications.route){
+                                val unSeenNotifications=vm.notifications.value.filter {notification->
+                                    notification.seen == false
+                                }
+
+                                if(unSeenNotifications.isEmpty()){
+                                    Icon(imageVector =it.icon!!,null )
+                                }else{
+                                    NotificationsActiveIcon()
+                                }
+
+                            }else{
+                                if (it.icon!=null)
+                                    Icon(imageVector =it.icon ,null )
+                                else
+                                    Icon(painter = painterResource(it.drawable!!) ,null )
+                            }
+
+
+                        },
+                        label = {
+                            Text(text = stringResource(it.title),maxLines = 1)
+                        },
+                    )
                 }
+
             }
-        )
+        }
+
     }
+
 
     @Composable
     private fun Drawer(){
