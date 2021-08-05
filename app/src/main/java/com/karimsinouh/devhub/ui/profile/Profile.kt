@@ -7,10 +7,7 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.material.Icon
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Surface
-import androidx.compose.material.Text
+import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -33,6 +30,7 @@ import com.karimsinouh.devhub.R
 import com.karimsinouh.devhub.data.User
 import com.karimsinouh.devhub.ui.chat.chat.ChatActivity
 import com.karimsinouh.devhub.ui.items.PostItem
+import com.karimsinouh.devhub.ui.items.SwipeAblePostItem
 import com.karimsinouh.devhub.ui.main.MainViewModel
 import com.karimsinouh.devhub.ui.theme.DevhubTheme
 import com.karimsinouh.devhub.ui.viewUsersList.VIEW_FOLLOWERS
@@ -66,7 +64,15 @@ fun Profile(
                    }
 
                    items(vm.userPosts.value){item->
-                       PostItem(item) {
+                       SwipeAblePostItem(
+                           post=item,
+                           onEdit = {
+                                    //TODO::Navigate to edit item
+                           },
+                           onDelete = {
+                                      vm.postToDelete.value=item
+                           },
+                       ) {
                            nav.navigate(Screen.ViewPost.constructRoute(item.id!!))
                        }
                    }
@@ -75,7 +81,21 @@ fun Profile(
            }
         }
     }
+
+    vm.postToDelete.value?.let {
+        AlertDialog(
+            onDismissRequest = { vm.postToDelete.value=null },
+            title={ Text(text = "Delete") },
+            confirmButton = { TextButton(onClick = { vm.postToDelete.value = null }) {
+                Text(text = "Delete")
+            } },
+            text = { Text(text = "Please confirm that you want to delete this post\n${it.title}") }
+        )
+    }
+
 }
+
+
 
 @Composable
 fun UserInfoSection(

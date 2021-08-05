@@ -2,18 +2,26 @@ package com.karimsinouh.devhub.ui.items
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.*
+import androidx.compose.material.Button
 import androidx.compose.material.Card
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.layout.Layout
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.rememberImagePainter
 import com.karimsinouh.devhub.data.Post
+import com.karimsinouh.devhub.utils.SwipeAble
 import com.karimsinouh.devhub.utils.customComposables.ChipsList
 
 
@@ -33,6 +41,34 @@ fun PostItem(
     }
 }
 
+@Composable
+fun SwipeAblePostItem(
+    post: Post,
+    onDelete:()->Unit,
+    onEdit:()->Unit,
+    onClick: () -> Unit
+){
+
+
+
+    SwipeAble(
+        onEdit = onEdit,
+        onDelete = onDelete
+    ) {
+
+        when(post.type){
+
+            0-> Question(post,onClick)
+
+            1-> Announcement(post,onClick)
+
+            2-> Tutorial(post,onClick)
+
+        }
+
+    }
+}
+
 
 @Composable
 fun Question(
@@ -45,7 +81,7 @@ fun Question(
                 .clickable(onClick = onClick)
                 .padding(12.dp)
         ) {
-            Text(text = post.userName?:"Some User"+" asked a question",fontSize = 12.sp)
+            Text(text = post.userName+" asked a question",fontSize = 12.sp)
             Text(
                 text = post.title?:"",
                 fontWeight = FontWeight.Bold,
@@ -73,7 +109,7 @@ fun Announcement(
                 .clickable(onClick = onClick)
                 .padding(12.dp)
         ) {
-            Text(text = post.userName?:"Some User"+" announced",fontSize = 12.sp)
+            Text(text = post.userName+" announced",fontSize = 12.sp)
             Text(
                 text = post.title?:"",
                 fontWeight = FontWeight.Bold,
@@ -101,7 +137,9 @@ fun Tutorial(
 
     Card(modifier=Modifier.padding(horizontal = 12.dp,0.dp)){
         Column(
-            Modifier.clickable(onClick = onClick).fillMaxWidth()
+            Modifier
+                .clickable(onClick = onClick)
+                .fillMaxWidth()
         ) {
             if(hasImages){
                 val painter= rememberImagePainter(post.images!![0])

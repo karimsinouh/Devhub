@@ -39,26 +39,28 @@ class MainViewModel:ViewModel() {
 
     }
 
-    val error= mutableStateOf<String?>(null)
-    val currentScreen= mutableStateOf<Screen>(Screen.Home)
+    val error by lazy { mutableStateOf<String?>(null) }
+    val currentScreen by lazy { mutableStateOf<Screen>(Screen.Home) }
 
     //profile
-    val user= mutableStateOf<User?>(null)
-    val userPosts= mutableStateOf<List<Post>>(emptyList())
-    val profileState= mutableStateOf(ScreenState.LOADING)
+    val user by lazy { mutableStateOf<User?>(null) }
+    val userPosts by lazy { mutableStateOf<List<Post>>(emptyList()) }
+    val profileState by lazy { mutableStateOf(ScreenState.LOADING) }
+    val postToDelete by lazy { mutableStateOf<Post?>(null) }
 
     //home
-    val homeState= mutableStateOf(ScreenState.LOADING)
-    val posts= mutableStateOf<List<Post>>(emptyList())
+    val homeState by lazy { mutableStateOf(ScreenState.LOADING) }
+    val posts by lazy { mutableStateOf<List<Post>>(emptyList()) }
 
     //notifications
-    val notifications= mutableStateOf<List<Notification>>(emptyList())
-    val notificationsState= mutableStateOf(ScreenState.LOADING)
+    val notifications by lazy { mutableStateOf<List<Notification>>(emptyList()) }
+    val notificationsState by lazy { mutableStateOf(ScreenState.LOADING) }
 
-    val scaffoldState=ScaffoldState(
+    val scaffoldState by lazy {
+        ScaffoldState(
         DrawerState(DrawerValue.Closed),
-        SnackbarHostState()
-    )
+        SnackbarHostState())
+    }
 
     fun shouldShowBottomBar(route:String):Boolean {
         Screen.All.bottomNavItems.forEach {
