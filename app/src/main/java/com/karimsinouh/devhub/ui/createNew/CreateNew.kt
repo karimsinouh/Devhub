@@ -30,9 +30,7 @@ import com.karimsinouh.devhub.data.Post
 import com.karimsinouh.devhub.services.UploadPostService
 import com.karimsinouh.devhub.utils.ImagePicker
 import com.karimsinouh.devhub.utils.ScreenState
-import com.karimsinouh.devhub.utils.customComposables.ChipsList
-import com.karimsinouh.devhub.utils.customComposables.DropDownItems
-import com.karimsinouh.devhub.utils.customComposables.RoundedButton
+import com.karimsinouh.devhub.utils.customComposables.*
 import com.karimsinouh.devhub.utils.toBitmap
 import com.theartofdev.edmodo.cropper.CropImage
 
@@ -41,6 +39,30 @@ fun CreateNew(
     vm:CreateNewViewModel=viewModel(),
     nav:NavController
 ) {
+    when(vm.state.value){
+
+        ScreenState.IDLE-> Content(vm = vm)
+
+        ScreenState.DONE-> MessageScreen(
+            title = "Uploading your post..",
+            message = "You can close this screen now, your post will be uploaded in the background",
+            button = "Close",
+            onClick = { nav.popBackStack() }
+        )
+
+        ScreenState.ERROR-> ErrorDialog(error = vm.error) {
+            vm.error=""
+        }
+
+    }
+}
+
+
+
+@Composable
+private fun Content(
+    vm:CreateNewViewModel
+){
 
     val postTypes= stringArrayResource(id = R.array.postTypes).toList()
 
@@ -129,12 +151,10 @@ fun CreateNew(
             }
         }
 
-        if(vm.state.value==ScreenState.ERROR)
-            Text(vm.error)
-        else if (vm.state.value==ScreenState.DONE)
-            nav.popBackStack()
     }
+
 }
+
 
 private fun startService(
     context:Context,

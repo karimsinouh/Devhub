@@ -30,10 +30,7 @@ import coil.compose.rememberImagePainter
 import com.karimsinouh.devhub.R
 import com.karimsinouh.devhub.utils.ImagePicker
 import com.karimsinouh.devhub.utils.ScreenState
-import com.karimsinouh.devhub.utils.customComposables.CenterProgress
-import com.karimsinouh.devhub.utils.customComposables.ChipsList
-import com.karimsinouh.devhub.utils.customComposables.ErrorDialog
-import com.karimsinouh.devhub.utils.customComposables.RoundedButton
+import com.karimsinouh.devhub.utils.customComposables.*
 import com.karimsinouh.devhub.utils.toBitmap
 import com.theartofdev.edmodo.cropper.CropImage
 
@@ -201,7 +198,12 @@ fun EditProfile(
         }
 
         ScreenState.DONE->{
-            nav.popBackStack()
+            MessageScreen(
+                title = "Successfully Updated!",
+                message = "Your profile has been successfully updated, you can go back now.",
+                button = "Finish",
+                onClick = {nav.popBackStack()}
+            )
         }
     }
 }
