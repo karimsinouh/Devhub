@@ -45,7 +45,7 @@ android {
     }
     composeOptions {
         kotlinCompilerExtensionVersion = rootProject.extra["compose_version"] as String
-        kotlinCompilerVersion = "1.5.10"
+        kotlinCompilerVersion = "1.5.21"
     }
 }
 
@@ -67,8 +67,8 @@ dependencies {
     implementation("androidx.navigation:navigation-compose:2.4.0-alpha05")
 
     //dependency injection
-    implementation ("com.google.dagger:hilt-android:2.37")
-    kapt ("com.google.dagger:hilt-compiler:2.37")
+    implementation ("com.google.dagger:hilt-android:2.38.1")
+    kapt ("com.google.dagger:hilt-compiler:2.38.1")
 
     //firebase
     implementation ("com.google.firebase:firebase-auth-ktx:21.0.1")
@@ -77,8 +77,7 @@ dependencies {
     implementation ("com.google.firebase:firebase-messaging-ktx:22.0.0")
 
     //accompanist
-    val accompanistVersion="0.15.0"
-    implementation("com.google.accompanist:accompanist-coil:$accompanistVersion")
+    val accompanistVersion="0.16.0"
     implementation ("com.google.accompanist:accompanist-pager:$accompanistVersion")
     implementation("com.google.accompanist:accompanist-pager-indicators:$accompanistVersion")
 
@@ -90,6 +89,8 @@ dependencies {
     implementation("io.ktor:ktor-client-android:$ktor_version")
     implementation("io.ktor:ktor-client-gson:$ktor_version")
 
+    //image loading library
+    implementation("io.coil-kt:coil-compose:1.3.2")
 
 
 }
