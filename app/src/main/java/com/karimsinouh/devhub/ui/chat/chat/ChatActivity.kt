@@ -82,10 +82,8 @@ class ChatActivity:ComponentActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
+        setTheme(R.style.Theme_Devhub)
         setContent {
-
-
             DevhubTheme {
                 window.statusBarColor=MaterialTheme.colors.surface.toArgb()
 

@@ -15,6 +15,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.karimsinouh.devhub.R
 import com.karimsinouh.devhub.ui.authentication.login.Login
 import com.karimsinouh.devhub.ui.authentication.onBoarding.OnBoarding
 import com.karimsinouh.devhub.ui.authentication.signUp.SignUp
@@ -31,8 +32,8 @@ class AuthenticationActivity: ComponentActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        setTheme(R.style.Theme_Devhub)
         setContent {
-
             nav= rememberNavController()
 
             DevhubTheme {

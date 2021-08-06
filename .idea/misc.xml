@@ -4,6 +4,9 @@
     <option name="filePathToZoomLevelMap">
       <map>
         <entry key="..\:/Android projects/compose/Devhub/app/src/main/res/drawable/ic_behance.xml" value="0.1" />
+        <entry key="..\:/Android projects/compose/Devhub/app/src/main/res/drawable/ic_splash_icon.xml" value="0.23333333333333334" />
+        <entry key="..\:/Android projects/compose/Devhub/app/src/main/res/drawable/splash.xml" value="0.11203703703703703" />
+        <entry key="..\:/Android projects/compose/Devhub/app/src/main/res/drawable/splash_background.xml" value="0.23333333333333334" />
       </map>
     </option>
   </component>

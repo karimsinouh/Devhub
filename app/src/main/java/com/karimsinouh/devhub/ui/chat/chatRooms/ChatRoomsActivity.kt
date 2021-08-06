@@ -21,6 +21,7 @@ import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.unit.dp
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
+import com.karimsinouh.devhub.R
 import com.karimsinouh.devhub.ui.chat.chat.ChatActivity
 import com.karimsinouh.devhub.ui.items.ChatRoomItem
 import com.karimsinouh.devhub.ui.theme.DevhubTheme
@@ -44,7 +45,7 @@ class ChatRoomsActivity:ComponentActivity() {
     @ExperimentalMaterialApi
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
+        setTheme(R.style.Theme_Devhub)
         setContent {
 
             DevhubTheme {
