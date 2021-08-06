@@ -55,7 +55,7 @@ class ChatViewModel @Inject constructor(
             val notification=Notification(
                 title="${currentUSer.displayName} sent you a ${if (type==Message.TYPE_IMAGE) "picture" else "message"} ",
                 content = if (type==Message.TYPE_IMAGE) "Click to open the picture" else message.value,
-                type=type,
+                type=Notification.TYPE_MESSAGE,
                 action = "${currentUSer.uid}}$chatRoomId",
                 receiverId = user.value?.id,
                 picture = currentUSer.photoUrl.toString()
