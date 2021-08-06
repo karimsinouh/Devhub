@@ -1,5 +1,6 @@
 package com.karimsinouh.devhub.ui.home
 
+import android.util.Log
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -10,6 +11,7 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringArrayResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.google.accompanist.pager.ExperimentalPagerApi
@@ -56,7 +58,15 @@ private fun Content(nav:NavController, vm:MainViewModel) {
         )
 
         HorizontalPager(state = vm.pagerState) {page->
-            PostsList(vm.posts.value.filter { it.type==page }) {
+            val posts=vm.posts.value.filter { it.type==page }
+
+            PostsList(
+                items = posts,
+                onHashtagClick = { h->
+                    nav.navigate(Screen.ViewHashtags.constructRoute(h))
+                    Log.d("wtf","Clicked")
+                }
+            ) {
                 nav.navigate(Screen.ViewPost.constructRoute(it.id!!))
             }
         }
@@ -69,7 +79,8 @@ private fun Content(nav:NavController, vm:MainViewModel) {
 fun PostsTabs(
     selectedIndex:Int,
     onSelect:(index:Int)->Unit,
-    pages:List<String>
+    pages:List<String>,
+    edgePadding: Dp=TabRowDefaults.ScrollableTabRowPadding
 ) {
 
     ScrollableTabRow(
@@ -81,7 +92,8 @@ fun PostsTabs(
                 color = MaterialTheme.colors.primary,
                 modifier = Modifier.tabIndicatorOffset(tabPositions[selectedIndex])
             )
-        }
+        },
+        edgePadding = edgePadding
     ) {
 
         pages.forEachIndexed { index, s ->
@@ -108,6 +120,7 @@ fun PostsTabs(
 @Composable
 fun PostsList(
     items:List<Post>,
+    onHashtagClick:(String)->Unit,
     onClick:(Post)->Unit
 ){
     LazyColumn(
@@ -116,7 +129,10 @@ fun PostsList(
         modifier = Modifier.fillMaxSize()
     ) {
         items(items=items,key={it.id!!}){item->
-            PostItem(post = item){
+            PostItem(
+                post = item,
+                onHashtagClick = onHashtagClick
+            ){
                 onClick(item)
             }
         }

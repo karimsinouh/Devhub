@@ -78,6 +78,14 @@ data class User(
                 }
         }
 
+        fun getBySkill(skill:String,listener: (Result<List<User>>) -> Unit){
+            Firebase.firestore.collection("users").whereArrayContains("skills",skill)
+                .get().addOnCompleteListener {
+                    val result=Result(it.isSuccessful,it.result?.toObjects(User::class.java),it.exception?.message)
+                    listener(result)
+                }
+        }
+
     }
 
     fun create(listener:(Task<Void>)->Unit){

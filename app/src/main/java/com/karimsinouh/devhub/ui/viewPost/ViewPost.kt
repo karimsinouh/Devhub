@@ -86,7 +86,9 @@ fun ViewPost(
                 }
 
                 item {
-                    ChipsList(list = vm.post.value?.hashtags!!)
+                    ChipsList(list = vm.post.value?.hashtags!!){ h->
+                        nav.navigate(Screen.ViewHashtags.constructRoute(h))
+                    }
                 }
 
                 //content

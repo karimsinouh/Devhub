@@ -62,18 +62,17 @@ fun Profile(
                    }
 
                    item {
-                       SkillsSection(vm.user.value?.skills?: emptyList())
+                       SkillsSection(skills=vm.user.value?.skills?: emptyList()){
+                               h-> nav.navigate(Screen.ViewHashtags.constructRoute(h))
+                       }
                    }
 
                    items(vm.userPosts.value,key={item->item.id!!}){item->
                        SwipeAblePostItem(
                            post=item,
-                           onEdit = {
-                                    nav.navigate(Screen.EditPost.constructRoute(item.id!!))
-                           },
-                           onDelete = {
-                                      vm.postToDelete.value=item
-                           },
+                           onEdit = { nav.navigate(Screen.EditPost.constructRoute(item.id!!)) },
+                           onDelete = { vm.postToDelete.value=item },
+                           onHashtagClick = {h-> nav.navigate(Screen.ViewHashtags.constructRoute(h)) }
                        ) {
                            nav.navigate(Screen.ViewPost.constructRoute(item.id!!))
                        }
@@ -217,7 +216,10 @@ fun UserInfoSection(
 }
 
 @Composable
-fun SkillsSection(skills:List<String>){
+fun SkillsSection(
+    skills:List<String>,
+    onClick:(String)->Unit
+){
     Column(
         modifier= Modifier
             .fillMaxWidth()
@@ -226,7 +228,7 @@ fun SkillsSection(skills:List<String>){
     ) {
         Text(text="Skills",fontSize = 18.sp,fontWeight = FontWeight.Bold)
         Spacer(modifier = Modifier.height(8.dp))
-        ChipsList(list = skills)
+        ChipsList(list = skills,onClick =onClick)
     }
 
 }

@@ -58,7 +58,12 @@ fun Search(
                         }
                     else
                         items(vm.posts.value){item->
-                            PostItem(post = item) {
+                            PostItem(
+                                post = item,
+                                onHashtagClick = { h->
+                                    nav.navigate(Screen.ViewHashtags.constructRoute(h))
+                                }
+                            ) {
                                 nav.navigate(Screen.ViewPost.constructRoute(item.id!!))
                             }
                         }

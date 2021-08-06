@@ -50,7 +50,7 @@ fun EditPost(
 }
 
 @Composable
-fun Content(vm:EditPostViewModel) {
+private fun Content(vm:EditPostViewModel) {
     Column(
         modifier= Modifier
             .padding(12.dp)
@@ -84,7 +84,7 @@ fun Content(vm:EditPostViewModel) {
 
         vm.hashtags.value.let {
             if (it.isNotEmpty())
-                ChipsList(list = vm.getHashtags(it))
+                ChipsList(list = vm.getHashtags(it)){}
         }
 
 

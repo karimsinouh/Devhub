@@ -47,11 +47,18 @@ fun ViewProfile(
                     }
 
                     item {
-                        SkillsSection(vm.user.value?.skills?: emptyList())
+                        SkillsSection(skills = vm.user.value?.skills?: emptyList()){
+                                h-> nav.navigate(Screen.ViewHashtags.constructRoute(h))
+                        }
                     }
 
                     items(vm.posts.value){item->
-                        PostItem(item) {
+                        PostItem(
+                            post = item,
+                            onHashtagClick = { h ->
+                                nav.navigate(Screen.ViewHashtags.constructRoute(h))
+                            }
+                        ) {
                             nav.navigate(Screen.ViewPost.constructRoute(item.id!!))
                         }
                     }

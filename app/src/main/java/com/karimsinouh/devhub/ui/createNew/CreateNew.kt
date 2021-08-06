@@ -120,7 +120,7 @@ private fun Content(
 
         vm.hashtags.value.let {
             if (it.isNotEmpty())
-                ChipsList(list = vm.getHashtags(it))
+                ChipsList(list = vm.getHashtags(it)){}
         }
 
         DropDownItems(items = postTypes,vm.selectedPostType.value) {

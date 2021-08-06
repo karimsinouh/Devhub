@@ -2,19 +2,12 @@ package com.karimsinouh.devhub.ui.items
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.*
-import androidx.compose.material.Button
 import androidx.compose.material.Card
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.layout.Layout
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
@@ -28,13 +21,14 @@ import com.karimsinouh.devhub.utils.customComposables.ChipsList
 @Composable
 fun PostItem(
     post: Post,
+    onHashtagClick: (hashtag: String) -> Unit,
     onClick: () -> Unit
 ){
     when(post.type){
 
-        0-> Question(post,onClick)
+        0-> Question(post,onClick,onHashtagClick)
 
-        1-> Announcement(post,onClick)
+        1-> Announcement(post,onClick,onHashtagClick)
 
         2-> Tutorial(post,onClick)
 
@@ -44,6 +38,7 @@ fun PostItem(
 @Composable
 fun SwipeAblePostItem(
     post: Post,
+    onHashtagClick: (hashtag: String) -> Unit,
     onDelete:()->Unit,
     onEdit:()->Unit,
     onClick: () -> Unit
@@ -58,9 +53,9 @@ fun SwipeAblePostItem(
 
         when(post.type){
 
-            0-> Question(post,onClick)
+            0-> Question(post,onClick,onHashtagClick)
 
-            1-> Announcement(post,onClick)
+            1-> Announcement(post,onClick,onHashtagClick)
 
             2-> Tutorial(post,onClick)
 
@@ -73,7 +68,8 @@ fun SwipeAblePostItem(
 @Composable
 fun Question(
     post: Post,
-    onClick:()->Unit
+    onClick:()->Unit,
+    onHashtagClick:(hashtag:String)->Unit
 ){
     Card(modifier=Modifier.padding(horizontal = 12.dp,0.dp)){
         Column(
@@ -89,7 +85,9 @@ fun Question(
             )
             Row {
                 post.hashtags?.let {tags->
-                    ChipsList(list = tags)
+                    ChipsList(list = tags){
+                        onHashtagClick(it)
+                    }
                 }
             }
             Text(text = post.content?:"",maxLines = 5)
@@ -101,7 +99,8 @@ fun Question(
 @Composable
 fun Announcement(
     post: Post,
-    onClick:()->Unit
+    onClick:()->Unit,
+    onHashtagClick:(hashtag:String)->Unit
 ){
     Card(modifier=Modifier.padding(horizontal = 12.dp,0.dp)){
         Column(
@@ -117,7 +116,9 @@ fun Announcement(
             )
             Row {
                 post.hashtags?.let {tags->
-                    ChipsList(list = tags)
+                    ChipsList(list = tags){
+                        onHashtagClick(it)
+                    }
                 }
             }
             Text(text = post.content?:"",maxLines = 5)

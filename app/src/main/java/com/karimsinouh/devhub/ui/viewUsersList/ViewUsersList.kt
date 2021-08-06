@@ -1,13 +1,16 @@
 package com.karimsinouh.devhub.ui.viewUsersList
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.material.Divider
 import androidx.compose.material.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.SideEffect
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.karimsinouh.devhub.data.User
@@ -54,12 +57,14 @@ fun UsersList(
     onClick:(User)->Unit
 ){
     LazyColumn(
-        modifier=Modifier.fillMaxSize().background(MaterialTheme.colors.surface)
+        modifier=Modifier.fillMaxSize(),
+        verticalArrangement = Arrangement.spacedBy(12.dp)
     ){
         items(list){item->
             UserItem(item) {
                 onClick(item)
             }
+            Divider()
         }
     }
 }

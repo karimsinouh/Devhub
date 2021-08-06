@@ -44,6 +44,9 @@ sealed class Screen(
         fun constructRoute(postId:String)=route.split("/")[0]+"/"+postId
     }
 
+    object ViewHashtags:Screen("viewHashtags/{hashtag}",R.string.hashtag){
+        fun constructRoute(hashtag:String)=route.split("/")[0]+"/"+hashtag
+    }
 
 
     object All{
@@ -62,6 +65,10 @@ sealed class Screen(
 
         val drawerItems=listOf(
             EditProfile,
+            Home,
+            Search,
+            Profile,
+            Notifications
         )
 
         private val allItems= listOf(
@@ -74,7 +81,8 @@ sealed class Screen(
             ViewPost,
             ViewProfile,
             ViewUsersList,
-            EditPost
+            EditPost,
+            ViewHashtags
         )
     }
 

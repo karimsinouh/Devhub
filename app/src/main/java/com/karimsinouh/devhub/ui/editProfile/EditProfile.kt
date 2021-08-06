@@ -140,7 +140,7 @@ fun EditProfile(
                     fontSize = 11.sp,
                     modifier=Modifier.fillMaxWidth()
                 )
-                ChipsList(list = vm.getSkills())
+                ChipsList(list = vm.getSkills()){}
 
                 Text(
                     text="Social Networks",

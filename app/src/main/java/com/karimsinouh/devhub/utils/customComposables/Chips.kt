@@ -16,7 +16,8 @@ import androidx.compose.ui.unit.dp
 @Composable
 fun Chip(
     text:String,
-    selected:Boolean=false
+    selected:Boolean=false,
+    onClick:()->Unit
 ){
     val background=if (selected)
         MaterialTheme.colors.primary.copy(alpha = 0.1f)
@@ -33,19 +34,19 @@ fun Chip(
             .padding(0.dp, 8.dp, 8.dp, 8.dp)
             .clip(CircleShape)
             .background(background)
+            .clickable(onClick=onClick)
     ) {
         Text(
             text = text,
             color =contentColor,
             modifier = Modifier
-                .clickable { }
                 .padding(12.dp, 8.dp)
         )
     }
 }
 
 @Composable
-fun ChipsList(list:List<String>){
+fun ChipsList(list:List<String>,onClick:(String)->Unit){
     if(list.isNotEmpty())
         Row(
             modifier= Modifier
@@ -54,7 +55,9 @@ fun ChipsList(list:List<String>){
             horizontalArrangement = Arrangement.spacedBy(8.dp)
         ){
             list.forEach {
-                Chip(it)
+                Chip(it){
+                    onClick(it)
+                }
             }
         }
 }

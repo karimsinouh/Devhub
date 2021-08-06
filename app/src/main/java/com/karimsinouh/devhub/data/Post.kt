@@ -117,6 +117,14 @@ data class Post(
                         listener(Result(true,value.toObject(Post::class.java)))
                 }
         }
+
+        fun getByHashtag(hashtag:String,listener: (Result<List<Post>>) -> Unit){
+            Firebase.firestore.collection("posts").whereArrayContains("hashtags",hashtag)
+                .get().addOnCompleteListener {
+                    val result=Result(it.isSuccessful,it.result?.toObjects(Post::class.java),it.exception?.message)
+                    listener(result)
+                }
+        }
     }
 
 
