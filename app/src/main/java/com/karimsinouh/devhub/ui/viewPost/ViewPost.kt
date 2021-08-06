@@ -66,13 +66,14 @@ fun ViewPost(
                 modifier= Modifier
                     .fillMaxSize()
                     .background(MaterialTheme.colors.surface)
-                    .padding(12.dp),
-                //verticalArrangement = Arrangement.spacedBy(8.dp)
+                    .padding(12.dp)
             ) {
 
                 if (vm.post.value?.images?.isNotEmpty()!!){
                     item {
-                        PicturesPager(pictures = vm.post.value?.images!!)
+                        PicturesPager(pictures = vm.post.value?.images!!){
+                            nav.navigate(Screen.ViewPicture.constructRoute(it))
+                        }
                     }
                 }
 
@@ -264,7 +265,8 @@ fun UpDownVote(
 @OptIn(ExperimentalPagerApi::class)
 @Composable
 private fun PicturesPager(
-    pictures:List<String>
+    pictures:List<String>,
+    onClick:(String)->Unit
 ){
 
     val state= rememberPagerState(pageCount = pictures.size)
@@ -278,7 +280,8 @@ private fun PicturesPager(
                modifier= Modifier
                    .height(200.dp)
                    .fillMaxWidth()
-                   .clip(RoundedCornerShape(12.dp)),
+                   .clip(RoundedCornerShape(12.dp))
+                   .clickable { onClick(pictures[page]) },
                contentScale = ContentScale.Crop
            )
         }

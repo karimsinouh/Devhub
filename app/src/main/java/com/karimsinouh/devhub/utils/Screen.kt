@@ -48,6 +48,10 @@ sealed class Screen(
         fun constructRoute(hashtag:String)=route.split("/")[0]+"/"+hashtag
     }
 
+    object ViewPicture:Screen("viewPicture?url={url}",R.string.picture){
+        fun constructRoute(url:String)="viewPicture?url=$url"
+    }
+
 
     object All{
 
@@ -82,7 +86,8 @@ sealed class Screen(
             ViewProfile,
             ViewUsersList,
             EditPost,
-            ViewHashtags
+            ViewHashtags,
+            ViewPicture
         )
     }
 

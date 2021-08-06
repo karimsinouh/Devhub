@@ -38,6 +38,7 @@
     <string name="notifications">Notifications</string>
     <string name="editPost">Edit Post</string>
     <string name="hashtag">Hashtag</string>
+    <string name="picture">Picture</string>
 
     <string-array name="postTypes">
         <item>Question</item>

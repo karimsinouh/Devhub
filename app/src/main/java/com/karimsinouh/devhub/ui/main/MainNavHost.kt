@@ -8,6 +8,7 @@ import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
 import androidx.navigation.NavType
 import androidx.navigation.compose.navArgument
+import coil.annotation.ExperimentalCoilApi
 import com.google.accompanist.navigation.animation.AnimatedNavHost
 import com.google.accompanist.navigation.animation.composable
 import com.google.accompanist.pager.ExperimentalPagerApi
@@ -19,6 +20,7 @@ import com.karimsinouh.devhub.ui.profile.Profile
 import com.karimsinouh.devhub.ui.search.Search
 import com.karimsinouh.devhub.ui.notifications.Notifications
 import com.karimsinouh.devhub.ui.viewHashtags.ViewHashtags
+import com.karimsinouh.devhub.ui.viewPicture.ViewPicture
 import com.karimsinouh.devhub.ui.viewPost.ViewPost
 import com.karimsinouh.devhub.ui.viewPost.ViewPostViewModel
 import com.karimsinouh.devhub.ui.viewProfile.ViewProfile
@@ -59,7 +61,8 @@ fun MainNavHost(
             Home(nav = controller, vm = vm)
         }
 
-        composable(route=Screen.Search.route,
+        composable(
+            route=Screen.Search.route,
             enterTransition = {_,_->
                 slideInHorizontally(initialOffsetX = {1000})
             },
@@ -260,6 +263,28 @@ fun MainNavHost(
         ){
             val hashtag=it.arguments?.getString("hashtag")!!
             ViewHashtags(nav = controller, _hashtag = hashtag)
+        }
+
+        composable(
+            route=Screen.ViewPicture.route,
+            arguments = listOf(
+                navArgument("url"){NavType.StringType}
+            ),
+            enterTransition = {_,_->
+                slideInHorizontally(initialOffsetX = {1000})
+            },
+            exitTransition = {_,_->
+                slideOutHorizontally(targetOffsetX = {-1000})
+            },
+            popEnterTransition = {_,_->
+                slideInHorizontally(initialOffsetX = {-1000})
+            },
+            popExitTransition = {_,_->
+                slideOutHorizontally(targetOffsetX = {1000})
+            }
+        ){
+            val url=it.arguments?.getString("url")?:""
+            ViewPicture(url)
         }
 
     }
