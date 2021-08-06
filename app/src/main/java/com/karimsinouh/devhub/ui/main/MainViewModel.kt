@@ -8,6 +8,8 @@ import androidx.compose.material.SnackbarHostState
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.google.accompanist.pager.ExperimentalPagerApi
+import com.google.accompanist.pager.PagerState
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 import com.karimsinouh.devhub.data.Notification
@@ -51,6 +53,11 @@ class MainViewModel:ViewModel() {
     //home
     val homeState by lazy { mutableStateOf(ScreenState.LOADING) }
     val posts by lazy { mutableStateOf<List<Post>>(emptyList()) }
+
+    @ExperimentalPagerApi
+    val pagerState by lazy{
+        PagerState(3)
+    }
 
     //notifications
     val notifications by lazy { mutableStateOf<List<Notification>>(emptyList()) }
