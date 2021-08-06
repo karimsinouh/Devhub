@@ -1,12 +1,16 @@
 package com.karimsinouh.devhub.ui.items
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Card
+import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
@@ -102,12 +106,29 @@ fun Announcement(
     onClick:()->Unit,
     onHashtagClick:(hashtag:String)->Unit
 ){
+
+    val hasImages=post.images?.isNotEmpty()!!
+
     Card(modifier=Modifier.padding(horizontal = 12.dp,0.dp)){
         Column(
             Modifier
                 .clickable(onClick = onClick)
                 .padding(12.dp)
         ) {
+
+            if(hasImages){
+                val painter= rememberImagePainter(post.images!![0])
+                Image(
+                    painter = painter,
+                    contentDescription = null,
+                    modifier= Modifier
+                        .fillMaxWidth()
+                        .height(200.dp)
+                        .clip(RoundedCornerShape(12.dp))
+                        .background(MaterialTheme.colors.onSurface.copy(alpha = 0.2f)),
+                    contentScale= ContentScale.Crop
+                )
+            }
             Text(text = post.userName+" announced",fontSize = 12.sp)
             Text(
                 text = post.title?:"",
@@ -149,7 +170,8 @@ fun Tutorial(
                     contentDescription = null,
                     modifier= Modifier
                         .fillMaxWidth()
-                        .height(200.dp),
+                        .height(200.dp)
+                        .background(MaterialTheme.colors.onSurface.copy(alpha = 0.2f)),
                     contentScale= ContentScale.Crop
                 )
             }
