@@ -17,6 +17,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.karimsinouh.devhub.data.ChatRoom
+import com.karimsinouh.devhub.data.Message
 import com.karimsinouh.devhub.data.User
 import com.karimsinouh.devhub.ui.theme.Red
 import com.karimsinouh.devhub.ui.theme.Shapes
@@ -71,9 +72,9 @@ fun ChatRoomItem(
                 chatRoom.lastMessageAsObject()?.let {
 
                     val sender=if (it.sender==uid) "You:" else "Him:"
-
+                    val message = if(it.type==Message.TYPE_TEXT) it.message else "Picture"
                     Text(
-                        text = "$sender ${it.message}",
+                        text = "$sender $message",
                         fontSize = 12.sp,
                         color=MaterialTheme.colors.onBackground.copy(alpha=0.7f)
                     )

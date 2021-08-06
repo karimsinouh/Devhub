@@ -1,5 +1,6 @@
 package com.karimsinouh.devhub.ui.chat.chat
 
+import android.net.Uri
 import android.util.Log
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
@@ -11,6 +12,7 @@ import com.karimsinouh.devhub.data.Notification
 import com.karimsinouh.devhub.data.User
 import com.karimsinouh.devhub.ui.notifications.NotificationsRepository
 import com.karimsinouh.devhub.utils.ScreenState
+import com.karimsinouh.devhub.utils.Upload
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 
@@ -34,6 +36,8 @@ class ChatViewModel @Inject constructor(
             field=value
     }
 
+    val pictureState= mutableStateOf(ScreenState.IDLE)
+
     val messages= mutableStateOf<List<Message>>(emptyList())
 
     val message= mutableStateOf("")
@@ -41,20 +45,37 @@ class ChatViewModel @Inject constructor(
     fun sendTextMessage(){
         if (message.value!=""){
             Message.send(message.value,chatRoomId!!)
-
-            if (!user.value?.online!!){
-                val notification=Notification(
-                    title="${currentUSer.displayName} sent you a message",
-                    content = message.value,
-                    type=Notification.TYPE_MESSAGE,
-                    action = "${currentUSer.uid}}$chatRoomId",
-                    receiverId = user.value?.id,
-                    picture = currentUSer.photoUrl.toString()
-                )
-                notificationsRepository.sendNotification(notification.asData(user.value?.token))
-            }
-
+            pushNotification(Message.TYPE_TEXT)
             message.value=""
+        }
+    }
+
+    private fun pushNotification(type:Int){
+        if (!user.value?.online!!){
+            val notification=Notification(
+                title="${currentUSer.displayName} sent you a ${if (type==Message.TYPE_IMAGE) "picture" else "message"} ",
+                content = if (type==Message.TYPE_IMAGE) "Click to open the picture" else message.value,
+                type=type,
+                action = "${currentUSer.uid}}$chatRoomId",
+                receiverId = user.value?.id,
+                picture = currentUSer.photoUrl.toString()
+            )
+            notificationsRepository.sendNotification(notification.asData(user.value?.token))
+        }
+    }
+
+    fun sendPicture(uri: Uri){
+        pictureState.value=ScreenState.LOADING
+        Upload.image("chat/$chatRoomId",uri){
+            if (it.isSuccessful){
+                val url=it.data!!
+                Message.send(url,chatRoomId!!,Message.TYPE_IMAGE)
+                pushNotification(Message.TYPE_IMAGE)
+                pictureState.value=ScreenState.IDLE
+            }else{
+                state.value=ScreenState.IDLE
+                Log.d("ChatViewModel",it.message!!)
+            }
         }
     }
 

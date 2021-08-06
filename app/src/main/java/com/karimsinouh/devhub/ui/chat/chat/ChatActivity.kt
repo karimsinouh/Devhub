@@ -5,7 +5,9 @@ import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import androidx.activity.ComponentActivity
+import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.compose.setContent
+import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.viewModels
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -25,11 +27,13 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.toArgb
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import coil.compose.rememberImagePainter
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 import com.karimsinouh.devhub.data.User
@@ -38,10 +42,13 @@ import com.karimsinouh.devhub.data.Message
 import com.karimsinouh.devhub.ui.items.ProfilePicture
 import com.karimsinouh.devhub.ui.theme.DevhubTheme
 import com.karimsinouh.devhub.ui.theme.Shapes
+import com.karimsinouh.devhub.utils.ImagePicker
 import com.karimsinouh.devhub.utils.ScreenState
 import com.karimsinouh.devhub.utils.customComposables.CenterProgress
 import com.karimsinouh.devhub.utils.customComposables.MessageScreen
+import com.theartofdev.edmodo.cropper.CropImage
 import dagger.hilt.android.AndroidEntryPoint
+import io.grpc.InternalChannelz.id
 
 
 @AndroidEntryPoint
@@ -64,6 +71,14 @@ class ChatActivity:ComponentActivity() {
 
     private val vm by viewModels<ChatViewModel>()
     private val uid= Firebase.auth.currentUser?.uid!!
+
+    private val imagePicker by lazy {
+        ImagePicker(this)
+    }
+
+    private lateinit var cropLauncher : ActivityResultLauncher<Intent>
+
+    private lateinit var launcher : ActivityResultLauncher<String>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -103,8 +118,18 @@ class ChatActivity:ComponentActivity() {
 
         }
 
+        cropLauncher=registerForActivityResult(imagePicker.cropContract) {
+            if (it.resultCode== RESULT_OK && it.data!=null){
+                val uri= CropImage.getActivityResult(it.data).uri
+                vm.sendPicture(uri)
+            }
+        }
 
-
+        launcher=registerForActivityResult(imagePicker.contract) {
+            it?.let{uri->
+                imagePicker.openCrop(uri,cropLauncher)
+            }
+        }
 
     }
 
@@ -122,7 +147,9 @@ class ChatActivity:ComponentActivity() {
                     contentPadding = PaddingValues(12.dp),
                 ) {
 
-                    itemsIndexed(vm.messages.value){index,item->
+                    itemsIndexed(
+                        items=vm.messages.value
+                    ){index,item->
 
                         val isLastMessage=(index)==0
 
@@ -205,8 +232,18 @@ class ChatActivity:ComponentActivity() {
             trailingIcon = {
                 Row {
 
-                    IconButton(onClick = {  }) {
-                        Icon(painter = painterResource(R.drawable.ic_image), contentDescription = null)
+                    IconButton(onClick = {
+                        launcher.launch("image/*")
+                    }) {
+                        if (vm.pictureState.value==ScreenState.LOADING)
+                            CircularProgressIndicator(
+                                modifier = Modifier.size(20.dp),
+                                color = MaterialTheme.colors.onSurface,
+                                strokeWidth = 2.dp,
+                            )
+                        else
+                            Icon(painter = painterResource(R.drawable.ic_image), contentDescription = null)
+
                     }
 
                     IconButton(onClick = { vm.sendTextMessage() }) {
@@ -232,14 +269,28 @@ class ChatActivity:ComponentActivity() {
                 .padding(start = 64.dp),
             horizontalAlignment = Alignment.End
         ) {
-            Text(
-                text = message.message?:"",
-                color = MaterialTheme.colors.onPrimary,
-                modifier = Modifier
-                    .clip(RoundedCornerShape(8.dp))
-                    .background(MaterialTheme.colors.primary)
-                    .padding(horizontal = 12.dp, vertical = 8.dp)
-            )
+
+            if (message.type==Message.TYPE_TEXT)
+                Text(
+                    text = message.message?:"",
+                    color = MaterialTheme.colors.onPrimary,
+                    modifier = Modifier
+                        .clip(RoundedCornerShape(8.dp))
+                        .background(MaterialTheme.colors.primary)
+                        .padding(horizontal = 12.dp, vertical = 8.dp)
+                )
+            else {
+                val painter= rememberImagePainter(message.message)
+                Image(
+                    painter = painter,
+                    contentDescription = null,
+                    modifier = Modifier
+                        .clip(RoundedCornerShape(8.dp))
+                        .background(MaterialTheme.colors.primary)
+                        .size(300.dp),
+                    contentScale = ContentScale.Crop
+                )
+            }
 
 
             if(isLastOne && message.seen!!)
@@ -262,14 +313,28 @@ class ChatActivity:ComponentActivity() {
                 .padding(end = 64.dp),
             horizontalAlignment = Alignment.Start
         ) {
-            Text(
-                text = message.message?:"",
-                color = MaterialTheme.colors.onSurface,
-                modifier = Modifier
-                    .clip(RoundedCornerShape(8.dp))
-                    .background(MaterialTheme.colors.onSurface.copy(alpha = 0.1f))
-                    .padding(horizontal = 12.dp, vertical = 8.dp)
-            )
+
+            if (message.type==Message.TYPE_TEXT){
+                Text(
+                    text = message.message?:"",
+                    color = MaterialTheme.colors.onSurface,
+                    modifier = Modifier
+                        .clip(RoundedCornerShape(8.dp))
+                        .background(MaterialTheme.colors.onSurface.copy(alpha = 0.1f))
+                        .padding(horizontal = 12.dp, vertical = 8.dp)
+                )
+            }else {
+                val painter= rememberImagePainter(message.message)
+                Image(
+                    painter = painter,
+                    contentDescription = null,
+                    modifier = Modifier
+                        .clip(RoundedCornerShape(8.dp))
+                        .background(MaterialTheme.colors.onSurface.copy(alpha = 0.1f))
+                        .size(300.dp),
+                    contentScale = ContentScale.Crop
+                )
+            }
         }
     }
 
