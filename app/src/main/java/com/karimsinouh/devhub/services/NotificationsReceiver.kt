@@ -47,7 +47,7 @@ class NotificationsReceiver:FirebaseMessagingService() {
             .Builder(this, NOTIFICATION_CHANNEL_ID)
             .setContentTitle(notification.title)
             .setContentText(notification.content)
-            .setSmallIcon(R.drawable.ic_trophy)
+            .setSmallIcon(R.drawable.ic_bird)
             .setAutoCancel(true)
 
 
