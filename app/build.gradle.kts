@@ -101,5 +101,8 @@ dependencies {
     //image loading library
     implementation("io.coil-kt:coil-compose:1.3.2")
 
+    //lifecycle
+    implementation("android.arch.lifecycle:extensions:1.1.1")
+
 
 }

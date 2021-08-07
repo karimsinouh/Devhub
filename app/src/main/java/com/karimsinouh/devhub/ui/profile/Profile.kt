@@ -31,6 +31,7 @@ import com.karimsinouh.devhub.R
 import com.karimsinouh.devhub.data.User
 import com.karimsinouh.devhub.ui.chat.chat.ChatActivity
 import com.karimsinouh.devhub.ui.items.PostItem
+import com.karimsinouh.devhub.ui.items.ProfilePicture
 import com.karimsinouh.devhub.ui.items.SwipeAblePostItem
 import com.karimsinouh.devhub.ui.main.MainViewModel
 import com.karimsinouh.devhub.ui.theme.DevhubTheme
@@ -122,15 +123,10 @@ fun UserInfoSection(
             verticalAlignment = Alignment.CenterVertically
         ){
 
-            val painter= rememberImagePainter(user.picture!!)
-
-            Image(
-                painter = painter,
-                contentDescription = null,
-                contentScale = ContentScale.Crop,
-                modifier = Modifier
-                    .size(90.dp)
-                    .clip(CircleShape)
+            ProfilePicture(
+                size = 90.dp,
+                url = user.picture!!,
+                isOnline = user.online!!
             )
 
             Row(

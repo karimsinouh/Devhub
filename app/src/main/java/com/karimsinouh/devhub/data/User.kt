@@ -86,6 +86,10 @@ data class User(
                 }
         }
 
+        fun makeOnline(value:Boolean){
+            val uid=Firebase.auth.currentUser?.uid!!
+            Firebase.firestore.collection("users").document(uid).update("online",value)
+        }
     }
 
     fun create(listener:(Task<Void>)->Unit){
