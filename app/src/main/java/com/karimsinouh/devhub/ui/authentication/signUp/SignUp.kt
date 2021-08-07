@@ -30,6 +30,7 @@ import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.karimsinouh.devhub.R
+import com.karimsinouh.devhub.utils.Screen
 import com.karimsinouh.devhub.utils.ScreenState
 import com.karimsinouh.devhub.utils.customComposables.CenterProgress
 import com.karimsinouh.devhub.utils.customComposables.ErrorDialog
@@ -115,7 +116,7 @@ fun SignUp(
             visible = vm.screenState.value!=ScreenState.LOADING,
         ) {
             RoundedButton(
-                text = stringResource(id = R.string.login),
+                text = stringResource(id = R.string.signUp),
                 modifier = Modifier.fillMaxWidth()
             ) {
                 vm.signUp()
@@ -157,7 +158,9 @@ fun SignUp(
                 .fillMaxWidth()
                 .clickable
                 {
-                    nav.popBackStack()
+                    nav.navigate(Screen.Login.route){
+                        launchSingleTop=true
+                    }
                 },
             textAlign = TextAlign.Center
         )

@@ -8,11 +8,11 @@
     <string name="onBoarding">On Boarding</string>
     <string name="signUp">Sign Up</string>
     <string name="signup">Sign up</string>
-    <string name="signup_text">Create an account ans join our awesome community</string>
+    <string name="signup_text">Create an account and join us, our awesome community is waiting for you</string>
     <string name="name">Name</string>
     <string name="password">Password</string>
     <string name="already_have_account">Already have an account?</string>
-    <string name="login_text">make yourself feel home, sweetie</string>
+    <string name="login_text">Welcome back dear user.</string>
     <string name="dont_have_account">Don\'t have an account?</string>
     <string name="email">Email</string>
     <string name="editProfile">Edit profile</string>
@@ -39,6 +39,8 @@
     <string name="editPost">Edit Post</string>
     <string name="hashtag">Hashtag</string>
     <string name="picture">Picture</string>
+
+    <string name="onBoardingText">Welcome to Devshub community, we gather developers from all over the planet, to give them the ability to share knowledge, and help each other, and ask their dumb questions that cant be asked in stackoverflow. We invite you to join our awesome community and be a part of the family. this might sound like bullshit to you but trust me, you are right.</string>
 
     <string-array name="postTypes">
         <item>Question</item>

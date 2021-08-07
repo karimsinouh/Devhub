@@ -150,7 +150,9 @@ private fun SignUpSection(nav:NavController){
             .fillMaxWidth()
             .clickable
             {
-                nav.navigate(Screen.SignUp.route)
+                nav.navigate(Screen.SignUp.route){
+                    launchSingleTop=true
+                }
             },
         textAlign = TextAlign.Center
     )
