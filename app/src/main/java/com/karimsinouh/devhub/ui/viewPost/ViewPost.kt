@@ -17,6 +17,7 @@ import androidx.compose.material.icons.outlined.KeyboardArrowUp
 import androidx.compose.material.icons.outlined.Send
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.SideEffect
+import androidx.compose.runtime.compositionLocalOf
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -41,9 +42,11 @@ import com.karimsinouh.devhub.utils.Screen
 import com.karimsinouh.devhub.utils.ScreenState
 import com.karimsinouh.devhub.utils.customComposables.CenterProgress
 import com.karimsinouh.devhub.utils.customComposables.ChipsList
+import com.karimsinouh.devhub.utils.customComposables.ErrorDialog
 import com.karimsinouh.devhub.utils.customComposables.StickyHeaderToggle
 import java.util.*
 import androidx.compose.animation.AnimatedVisibility as AnimatedVisibility
+
 
 @ExperimentalPagerApi
 @ExperimentalAnimationApi
@@ -79,11 +82,7 @@ fun ViewPost(
 
                 //top section
                 item {
-                    TopSection(
-                        vm=vm,
-                        uid=vm.currentUser.uid,
-                        nav=nav
-                    )
+                    TopSection(vm, nav)
                 }
 
                 item {
@@ -129,18 +128,22 @@ fun ViewPost(
 
         ScreenState.LOADING-> CenterProgress()
 
+        ScreenState.ERROR->ErrorDialog(error =vm.error!!) {
+            vm.error=""
+        }
+
     }
 }
 
 @Composable
 private fun TopSection(
     vm:ViewPostViewModel,
-    uid:String,
     nav:NavController,
 ){
 
     val post=vm.post.value!!
     val user=vm.user.value
+    val uid=vm.currentUser.uid
 
     Row {
 
@@ -155,12 +158,19 @@ private fun TopSection(
         UpDownVote(
             votes = votes,
             onUpvote = {
-                post.voteUp(uid)
-                vm.onUpVote()
+                if(uid!=user?.id!!) {
+                    post.voteUp(uid)
+                    vm.onUpVote()
+                }else
+                    vm.error="you can't upvote your own post"
+
             },
             onDownVote = {
-                post.voteDown(uid)
-                vm.onDownVote()
+                if(uid!=user?.id!!){
+                    post.voteDown(uid)
+                    vm.onDownVote()
+                }else
+                    vm.error="you can't down vote your own post"
 
             },
             voteType = voteType

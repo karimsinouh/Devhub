@@ -29,6 +29,15 @@ class ViewPostViewModel: ViewModel() {
 
     val currentUser by lazy { Firebase.auth.currentUser!! }
 
+    var error:String?=""
+        set(value) {
+            state.value=if(value=="")
+                ScreenState.IDLE
+            else
+                ScreenState.ERROR
+            field=value
+        }
+
     val user= mutableStateOf<User?>(null)
     val post= mutableStateOf<Post?>(null)
     val state= mutableStateOf(ScreenState.LOADING)
