@@ -14,7 +14,7 @@ data class User(
     val email:String?=null,
     val bio:String?=null,
     val skills:List<String>?= emptyList(),
-    val picture:String?="https://startupmission.kerala.gov.in/get-image-view/ksum_team/1624432404.jpeg",
+    val picture:String?="https://upload.wikimedia.org/wikipedia/commons/7/7c/Profile_avatar_placeholder_large.png",
     val followers:List<String>?= emptyList(),
     val following:List<String>?= emptyList(),
     var searchText:String?=null,

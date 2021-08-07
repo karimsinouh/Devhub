@@ -80,9 +80,14 @@ fun ProfilePicture(
     isOnline:Boolean,
 ){
 
-
-    val painter= rememberImagePainter(url)
-
+    val painter= rememberImagePainter(
+        data = url,
+        builder = {
+            placeholder(R.drawable.profile)
+            error(R.drawable.ic_picture_placeholder)
+            crossfade(true)
+        }
+    )
 
     Box(
         modifier=Modifier.size(size)

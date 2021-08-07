@@ -72,7 +72,12 @@ fun EditProfile(
             ){
 
                 val painter= rememberImagePainter(
-                    data = vm.picture.value
+                    data = vm.picture.value,
+                    builder = {
+                        placeholder(R.drawable.profile)
+                        error(R.drawable.ic_picture_placeholder)
+                        crossfade(true)
+                    }
                 )
 
                 vm.uri.value.let {

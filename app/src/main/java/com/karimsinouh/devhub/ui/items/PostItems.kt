@@ -20,6 +20,7 @@ import coil.compose.rememberImagePainter
 import com.karimsinouh.devhub.data.Post
 import com.karimsinouh.devhub.utils.SwipeAble
 import com.karimsinouh.devhub.utils.customComposables.ChipsList
+import com.karimsinouh.devhub.R
 
 
 @Composable
@@ -117,7 +118,13 @@ fun Announcement(
         ) {
 
             if(hasImages){
-                val painter= rememberImagePainter(post.images!![0])
+                val painter= rememberImagePainter(
+                    data=post.images!![0],
+                    builder={
+                        placeholder(R.drawable.ic_picture_placeholder)
+                        error(R.drawable.ic_picture_placeholder)
+                    }
+                )
                 Image(
                     painter = painter,
                     contentDescription = null,
@@ -164,7 +171,13 @@ fun Tutorial(
                 .fillMaxWidth()
         ) {
             if(hasImages){
-                val painter= rememberImagePainter(post.images!![0])
+                val painter= rememberImagePainter(
+                    data=post.images!![0],
+                    builder = {
+                        placeholder(R.drawable.ic_picture_placeholder)
+                        error(R.drawable.ic_picture_placeholder)
+                    }
+                )
                 Image(
                     painter = painter,
                     contentDescription = null,

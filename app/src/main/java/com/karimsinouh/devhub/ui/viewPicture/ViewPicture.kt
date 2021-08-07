@@ -17,13 +17,7 @@ import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.graphics.painter.Painter
-import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.platform.LocalDensity
-import androidx.compose.ui.unit.Dp
-import androidx.compose.ui.unit.IntSize
-import androidx.compose.ui.unit.dp
-import coil.annotation.ExperimentalCoilApi
-import coil.compose.ImagePainter
+import com.karimsinouh.devhub.R
 import coil.compose.rememberImagePainter
 import com.karimsinouh.devhub.utils.Screen
 import com.karimsinouh.devhub.utils.customComposables.CenterProgress
@@ -31,7 +25,14 @@ import com.karimsinouh.devhub.utils.customComposables.CenterProgress
 @Composable
 fun ViewPicture(url:String){
 
-    val painter=rememberImagePainter(url)
+    val painter=rememberImagePainter(
+        data = url,
+        builder = {
+            placeholder(R.drawable.ic_picture_placeholder)
+            error(R.drawable.ic_picture_placeholder)
+            crossfade(true)
+        }
+    )
 
     BoxWithConstraints(
         modifier=Modifier.fillMaxSize(),
