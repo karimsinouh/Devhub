@@ -86,7 +86,7 @@ private fun Content(
             selectedIndex = vm.pagerState.currentPage,
             onSelect = {
                 scope.launch {
-                    vm.pagerState.scrollToPage(it)
+                    vm.pagerState.animateScrollToPage(it)
                 }
             },
             pages = postTypes,

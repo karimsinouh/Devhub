@@ -51,9 +51,8 @@ private fun Content(nav:NavController, vm:MainViewModel) {
             selectedIndex = vm.pagerState.currentPage,
             onSelect = {
                 scope.launch {
-                    vm.pagerState.scrollToPage(it)
-                }
-                       },
+                    vm.pagerState.animateScrollToPage(it)
+                } },
             pages = pages.toList()
         )
 
@@ -64,7 +63,6 @@ private fun Content(nav:NavController, vm:MainViewModel) {
                 items = posts,
                 onHashtagClick = { h->
                     nav.navigate(Screen.ViewHashtags.constructRoute(h))
-                    Log.d("wtf","Clicked")
                 }
             ) {
                 nav.navigate(Screen.ViewPost.constructRoute(it.id!!))
