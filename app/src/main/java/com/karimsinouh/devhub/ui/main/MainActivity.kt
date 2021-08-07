@@ -5,7 +5,10 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
+import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.ExperimentalAnimationApi
+import androidx.compose.animation.slideInVertically
+import androidx.compose.animation.slideOutVertically
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.Column
 import androidx.compose.material.*
@@ -68,7 +71,7 @@ class MainActivity : ComponentActivity(){
                 Scaffold(
                     scaffoldState= vm.scaffoldState,
                     topBar = { TopBarSection() },
-                    bottomBar = { if (shouldShowBottomBar) BottomBarSection() },
+                    bottomBar = {if (shouldShowBottomBar) BottomBarSection() },
                     backgroundColor = MaterialTheme.colors.background,
                     floatingActionButton = {
                         if(shouldShowBottomBar)
@@ -186,10 +189,11 @@ class MainActivity : ComponentActivity(){
                     BottomNavigationItem(
                         selected = it.route==selectedScreenRoute,
                         onClick = {
-                            navController.navigate(it.route){
-                                launchSingleTop=true
-                                popUpTo(Screen.Home.route)
-                            }
+                            if (it.route!=selectedScreenRoute)
+                                navController.navigate(it.route){
+                                    launchSingleTop=true
+                                    popUpTo(Screen.Home.route)
+                                }
                         },
                         alwaysShowLabel = false,
                         icon={
