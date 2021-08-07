@@ -33,10 +33,8 @@ class SearchViewModel: ViewModel() {
     val posts= mutableStateOf<List<Post>>(emptyList())
 
     fun search()=viewModelScope.launch{
-        state.value=ScreenState.LOADING
-
         if (query.value!=""){
-
+            state.value=ScreenState.LOADING
             val forUsers=searchType.value==SearchRepository.TYPE_USER || searchType.value==SearchRepository.TYPE_USER_BY_SKILL
 
             if(forUsers)

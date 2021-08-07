@@ -78,8 +78,6 @@ class SignUpViewModel @Inject constructor():ViewModel(){
 
         }
 
-
-
     }
 
     private fun getAndUpdateToken(uid:String){

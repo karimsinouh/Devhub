@@ -103,6 +103,7 @@ class MainViewModel:ViewModel() {
         User.get(currentUid, true){
             if (it.isSuccessful) {
                 profileState.value=ScreenState.IDLE
+
                 user.value = it.data!!
 
                 it.data.getPosts{userPostsTask->

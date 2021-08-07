@@ -39,12 +39,32 @@ data class User(
                         return@addSnapshotListener
                     }
 
-                    if (value!=null)
-                        listener(Result(true,value.toObject(User::class.java)))
+                    if (value!=null){
+
+                        val user=value.toObject(User::class.java)
+
+                        if (user==null)
+                            listener(Result(false,null,"This user might be deleted"))
+                        else
+                            listener(Result(true,user))
+
+                    }
                 }
             else
                 ref.get().addOnCompleteListener {
-                    listener(Result(it.isSuccessful,it.result?.toObject(User::class.java),it.exception?.message))
+
+                    val user=it.result?.toObject(User::class.java)
+
+                    if (it.isSuccessful){
+                        if (user==null)
+                            listener(Result(false,null,"This user might be deleted"))
+                        else
+                            listener(Result(it.isSuccessful,user,it.exception?.message))
+
+                    }else{
+                        listener(Result(false,null,it.exception?.message))
+                    }
+
                 }
 
         }
