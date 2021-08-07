@@ -14,6 +14,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
@@ -21,6 +22,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
+import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
@@ -79,11 +81,12 @@ fun Login(
         )
         Spacer(modifier = Modifier.height(24.dp))
 
+        val visualTransformation=if(vm.passwordVisibility.value) VisualTransformation.None else PasswordVisualTransformation()
+        val icon=if(vm.passwordVisibility.value) R.drawable.design_ic_visibility_off else R.drawable.design_ic_visibility
+
         TextField(
             value = vm.password.value,
-            onValueChange = {
-                            vm.password.value=it
-            },
+            onValueChange = { vm.password.value=it },
             leadingIcon = {Icon(Icons.Outlined.Lock,null)},
             placeholder = { Text(text = stringResource(id = R.string.password))},
             modifier = Modifier.fillMaxWidth(),
@@ -94,8 +97,13 @@ fun Login(
             keyboardActions = KeyboardActions(onDone = {
                 vm.login(context)
             }),
-            visualTransformation = PasswordVisualTransformation(),
-            singleLine = true
+            visualTransformation = visualTransformation,
+            singleLine = true,
+            trailingIcon = {
+                IconButton(onClick = {vm.togglePassword()}) {
+                    Icon(painter= painterResource(icon), contentDescription = null)
+                }
+            }
         )
         Spacer(modifier = Modifier.height(24.dp))
 
@@ -150,8 +158,8 @@ private fun SignUpSection(nav:NavController){
             .fillMaxWidth()
             .clickable
             {
-                nav.navigate(Screen.SignUp.route){
-                    launchSingleTop=true
+                nav.navigate(Screen.SignUp.route) {
+                    launchSingleTop = true
                 }
             },
         textAlign = TextAlign.Center

@@ -20,6 +20,9 @@ class LoginViewModel @Inject constructor(): ViewModel() {
     val email= mutableStateOf("")
     val password= mutableStateOf("")
     val screenState= mutableStateOf(ScreenState.IDLE)
+
+    val passwordVisibility= mutableStateOf(false)
+
     var error:String=""
     set(value){
         screenState.value = if (value!="")
@@ -51,6 +54,10 @@ class LoginViewModel @Inject constructor(): ViewModel() {
 
     fun clearError() {
         error=""
+    }
+
+    fun togglePassword() {
+        passwordVisibility.value= !passwordVisibility.value
     }
 
 }

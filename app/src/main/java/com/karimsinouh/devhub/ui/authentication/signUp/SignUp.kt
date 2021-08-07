@@ -15,6 +15,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
@@ -22,6 +23,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
+import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.tooling.preview.Preview
@@ -93,6 +95,10 @@ fun SignUp(
         )
         Spacer(modifier = Modifier.height(24.dp))
 
+        val visualTransformation=if(vm.passwordVisibility.value) VisualTransformation.None else PasswordVisualTransformation()
+        val icon=if(vm.passwordVisibility.value) R.drawable.design_ic_visibility_off else R.drawable.design_ic_visibility
+
+
         TextField(
             value = vm.password.value,
             onValueChange =
@@ -103,12 +109,16 @@ fun SignUp(
             placeholder = { Text(text = stringResource(R.string.password)) },
             modifier = Modifier.fillMaxWidth(),
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password,imeAction = ImeAction.Done),
-            visualTransformation = PasswordVisualTransformation(),
+            visualTransformation = visualTransformation,
             keyboardActions = KeyboardActions(onDone = {
                 vm.signUp()
             }),
-            singleLine = true
-
+            singleLine = true,
+            trailingIcon = {
+                IconButton(onClick = { vm.togglePassword() }) {
+                    Icon( painterResource(icon),null)
+                }
+            }
         )
         Spacer(modifier = Modifier.height(24.dp))
 
@@ -158,8 +168,8 @@ fun SignUp(
                 .fillMaxWidth()
                 .clickable
                 {
-                    nav.navigate(Screen.Login.route){
-                        launchSingleTop=true
+                    nav.navigate(Screen.Login.route) {
+                        launchSingleTop = true
                     }
                 },
             textAlign = TextAlign.Center

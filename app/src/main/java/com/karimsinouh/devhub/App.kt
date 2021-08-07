@@ -7,6 +7,9 @@ import androidx.lifecycle.LifecycleObserver
 
 import androidx.lifecycle.OnLifecycleEvent
 import androidx.lifecycle.ProcessLifecycleOwner
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.firestore.ktx.firestore
+import com.google.firebase.ktx.Firebase
 import com.karimsinouh.devhub.data.User
 
 
@@ -20,12 +23,16 @@ class App:Application(),LifecycleObserver{
 
     @OnLifecycleEvent(Lifecycle.Event.ON_STOP)
     private fun onAppBackgrounded() {
-        User.makeOnline(false)
+        val signedUp=Firebase.auth.currentUser!=null
+        if (signedUp)
+            User.makeOnline(false)
     }
 
     @OnLifecycleEvent(Lifecycle.Event.ON_START)
     private fun onAppForegrounded() {
-        User.makeOnline(true)
+        val signedUp=Firebase.auth.currentUser!=null
+        if (signedUp)
+            User.makeOnline(true)
     }
 
 }
