@@ -60,39 +60,6 @@ fun MainTopBar(
     }
 }
 
-@Composable
-fun MainBottomBar(
-    selectedScreenRoute:String,
-    onNavigation:(Screen)->Unit
-) {
-    Column {
-        Divider()
-        BottomNavigation(
-            backgroundColor = MaterialTheme.colors.surface,
-            contentColor = MaterialTheme.colors.onSurface,
-            elevation = 0.dp
-        ) {
-            Screen.All.bottomNavItems.forEach {
-                BottomNavigationItem(
-                    selected = it.route==selectedScreenRoute,
-                    onClick = { onNavigation(it) },
-                    alwaysShowLabel = false,
-                    icon={
-                        if (it.icon!=null)
-                            Icon(imageVector =it.icon ,null )
-                        else
-                            Icon(painter = painterResource(it.drawable!!) ,null )
-                    },
-                    label = {
-                        Text(text = stringResource(it.title),maxLines = 1)
-                    },
-                )
-            }
-
-        }
-    }
-
-}
 
 @OptIn(ExperimentalMaterialApi::class)
 @Composable

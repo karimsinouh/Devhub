@@ -86,7 +86,10 @@ class MainActivity : ComponentActivity(){
                     floatingActionButtonPosition = FabPosition.Center,
                     drawerContent = {Drawer()},
                     drawerShape = DrawerShape,
-                    drawerBackgroundColor = MaterialTheme.colors.surface
+                    drawerBackgroundColor = MaterialTheme.colors.surface,
+                    drawerElevation = 0.dp,
+                    drawerGesturesEnabled = true,
+                    drawerScrimColor = MaterialTheme.colors.onSurface.copy(alpha=0.2f)
                 ) {
 
 

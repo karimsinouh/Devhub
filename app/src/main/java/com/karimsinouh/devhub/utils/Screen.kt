@@ -68,11 +68,7 @@ sealed class Screen(
         )
 
         val drawerItems=listOf(
-            EditProfile,
-            Home,
-            Search,
-            Profile,
-            Notifications
+            EditProfile
         )
 
         private val allItems= listOf(
