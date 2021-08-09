@@ -1,6 +1,7 @@
 package com.karimsinouh.devhub.ui.notifications
 
 import android.util.Log
+import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import com.karimsinouh.devhub.data.Notification
@@ -26,6 +27,11 @@ class NotificationsRepository @Inject constructor(
     }
 
     fun sendNotification(notification: NotificationData){
+
+        val currentUid=Firebase.auth.currentUser?.uid?:"none"
+
+        if(currentUid==notification.data.receiverId)
+            return
 
         if(notification.to!=null)
             storeIt(notification)
