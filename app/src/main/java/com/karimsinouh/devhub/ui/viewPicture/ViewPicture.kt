@@ -69,7 +69,6 @@ private fun TransformAbleImage(painter:Painter?){
                 // add transformable to listen to multitouch transformation events
                 // after offset
                 .transformable(state = state)
-                .background(MaterialTheme.colors.onSurface.copy(alpha=0.2f))
                 .fillMaxWidth(),
             contentDescription=""
         )

@@ -6,6 +6,7 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Card
+import androidx.compose.material.Divider
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
@@ -135,6 +136,7 @@ fun Announcement(
                         .background(MaterialTheme.colors.onSurface.copy(alpha = 0.2f)),
                     contentScale= ContentScale.Crop
                 )
+                Spacer(modifier=Modifier.height(4.dp))
             }
             Text(text = post.userName+" announced",fontSize = 12.sp)
             Text(

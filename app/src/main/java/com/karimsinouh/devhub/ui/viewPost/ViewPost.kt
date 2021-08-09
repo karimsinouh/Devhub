@@ -21,6 +21,7 @@ import androidx.compose.runtime.compositionLocalOf
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
@@ -314,9 +315,6 @@ fun ReplyTextField(
     TextField(
         value = value,
         onValueChange = {onValueChange(it)},
-        leadingIcon = {
-            Icon(painter = painterResource(id = R.drawable.ic_comment), contentDescription = null)
-        },
         trailingIcon = {
             IconButton(onClick = onSubmit) {
                 Icon(imageVector = Icons.Outlined.Send, contentDescription = null)
@@ -325,7 +323,13 @@ fun ReplyTextField(
         placeholder = { Text(text = "Comment") },
         modifier = Modifier
             .fillMaxWidth()
-            .padding(0.dp, 8.dp)
+            .padding(0.dp, 8.dp),
+        colors = TextFieldDefaults.textFieldColors(
+            focusedIndicatorColor = Color.Transparent,
+            unfocusedIndicatorColor = Color.Transparent,
+            backgroundColor = MaterialTheme.colors.onSurface.copy(0.1f),
+        ),
+        shape =  RoundedCornerShape(8.dp),
     )
 }
 
@@ -334,39 +338,39 @@ fun ReplyItem(
     postId:String,
     reply: Reply
 ) {
-    Card{
-        Row(
-            modifier = Modifier
-                .padding(12.dp)
-                .fillMaxWidth(),
-        ) {
+    Row(
+        modifier = Modifier
+            .clip(RoundedCornerShape(8))
+            .background(MaterialTheme.colors.onSurface.copy(alpha = 0.1f))
+            .padding(12.dp)
+            .fillMaxWidth(),
+    ) {
 
-            val uid=Firebase.auth.currentUser?.uid!!
+        val uid=Firebase.auth.currentUser?.uid!!
 
-            val voteType=when{
-                reply.upVotes?.contains(uid)!! ->VoteType.UP
-                reply.downVotes?.contains(uid)!! ->VoteType.DOWN
-                else->VoteType.NONE
-            }
-
-            val votes=reply.upVotes.size.minus(reply.downVotes?.size?:0)
-            UpDownVote(
-                votes = votes,
-                onUpvote = { reply.upVote(postId,uid) },
-                onDownVote = { reply.downVote(postId,uid) },
-                voteType=voteType
-            )
-            Spacer(modifier = Modifier.width(8.dp))
-            Column {
-                Text(text =reply.date.toString(),fontSize = 12.sp)
-                Text(
-                    text = "${reply.userName} replied",
-                    fontWeight = FontWeight.Bold,
-                    fontSize = 20.sp
-                )
-                Text(text = reply.reply?:"")
-            }
-
+        val voteType=when{
+            reply.upVotes?.contains(uid)!! ->VoteType.UP
+            reply.downVotes?.contains(uid)!! ->VoteType.DOWN
+            else->VoteType.NONE
         }
+
+        val votes=reply.upVotes.size.minus(reply.downVotes?.size?:0)
+        UpDownVote(
+            votes = votes,
+            onUpvote = { reply.upVote(postId,uid) },
+            onDownVote = { reply.downVote(postId,uid) },
+            voteType=voteType
+        )
+        Spacer(modifier = Modifier.width(8.dp))
+        Column {
+            Text(text =reply.date.toString(),fontSize = 12.sp)
+            Text(
+                text = "${reply.userName} replied",
+                fontWeight = FontWeight.Bold,
+                fontSize = 20.sp
+            )
+            Text(text = reply.reply?:"")
+        }
+
     }
 }

@@ -119,7 +119,8 @@ private fun SearchTextField(
         },
         colors=TextFieldDefaults.textFieldColors(
             unfocusedIndicatorColor = Color.Transparent,
-            focusedIndicatorColor = Color.Transparent
+            focusedIndicatorColor = Color.Transparent,
+            trailingIconColor = MaterialTheme.colors.onSurface
         ),
         singleLine = true
     )
