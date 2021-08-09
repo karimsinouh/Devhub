@@ -40,7 +40,14 @@
     <string name="hashtag">Hashtag</string>
     <string name="picture">Picture</string>
 
-    <string name="onBoardingText">Welcome to Devshub community, we gather developers from all over the planet, to give them the ability to share knowledge, and help each other, and ask their dumb questions that cant be asked in stackoverflow. We invite you to join our awesome community and be a part of the family. this might sound like bullshit to you but trust me, you are right.</string>
+    <string name="onBoardingTitle1" >Help others</string>
+    <string name="onBoardingText1" >Help other promising developers by answering their questions and providing helpful feedbacks</string>
+
+    <string name="onBoardingTitle2" >Share knowledge</string>
+    <string name="onBoardingText2"  >You can also share your own tutorials here, and read other\'s articles to whatever </string>
+
+    <string name="onBoardingTitle3" >Communicate</string>
+    <string name="onBoardingText3"  >You can communicate with others by replying on their posts or even sending direct messages</string>
 
     <string-array name="postTypes">
         <item>Question</item>

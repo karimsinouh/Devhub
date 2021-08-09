@@ -19,6 +19,7 @@ import androidx.navigation.compose.rememberNavController
 import com.google.accompanist.navigation.animation.AnimatedNavHost
 import com.google.accompanist.navigation.animation.composable
 import com.google.accompanist.navigation.animation.rememberAnimatedNavController
+import com.google.accompanist.pager.ExperimentalPagerApi
 import com.karimsinouh.devhub.R
 import com.karimsinouh.devhub.ui.authentication.login.Login
 import com.karimsinouh.devhub.ui.authentication.onBoarding.OnBoarding
@@ -51,6 +52,7 @@ class AuthenticationActivity: ComponentActivity() {
 
     }
 
+    @OptIn(ExperimentalPagerApi::class)
     @ExperimentalAnimationApi
     @Composable
     private fun AuthNavHost(){

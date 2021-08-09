@@ -168,9 +168,7 @@ fun SignUp(
                 .fillMaxWidth()
                 .clickable
                 {
-                    nav.navigate(Screen.Login.route) {
-                        launchSingleTop = true
-                    }
+                    nav.popBackStack()
                 },
             textAlign = TextAlign.Center
         )
